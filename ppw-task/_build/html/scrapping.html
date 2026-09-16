@@ -64,6 +64,7 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to My Jupyter Book Matakuliah PPW" href="intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -165,8 +166,6 @@
       
       
       
-        
-      
       <dialog id="pst-primary-sidebar-modal"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
@@ -219,8 +218,8 @@
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
-          <li class="toctree-l1"><a class="reference internal" href="scrapping.html"><strong>Scrapping Data</strong></a></li>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>Scrapping Data</strong></a></li>
 </ul>
 
     </div>
@@ -418,6 +417,12 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-2-proses-scrapping-menggunakan-trafilatura"><strong>Langkah 2: Proses Scrapping Menggunakan Trafilatura</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-3-menampilkan-hasil"><strong>Langkah 3: Menampilkan Hasil</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-understanding"><strong>Data Understanding</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocessing"><strong>Preprocessing</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cleaning-data"><strong>Cleaning Data</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstrak-kata-unik"><strong>Ekstrak kata unik</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penerapan-tf-idf"><strong>Penerapan TF-IDF</strong></a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -441,6 +446,24 @@
 <section id="persiapan-library">
 <h2><strong>Persiapan Library</strong><a class="headerlink" href="#persiapan-library" title="Link to this heading">#</a></h2>
 <p>Memasang pustaka yang diperlukan (trafilatura untuk ekstraksi konten teks bersih, beautifulsoup4 untuk mengambil daftar tautan URL).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>scikit-learn
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: scikit-learn in D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages (1.9.1)
+Requirement already satisfied: numpy&gt;=1.24.1 in D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages (from scikit-learn) (2.5.3)
+Requirement already satisfied: scipy&gt;=1.10.0 in D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages (from scikit-learn) (1.18.1)
+Requirement already satisfied: joblib&gt;=1.4.0 in D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages (from scikit-learn) (1.6.0)
+Requirement already satisfied: narwhals&gt;=2.0.1 in D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages (from scikit-learn) (2.26.0)
+Requirement already satisfied: threadpoolctl&gt;=3.5.0 in D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages (from scikit-learn) (3.7.0)
+Requirement already satisfied: cloudpickle&gt;=3.0 in D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages (from joblib&gt;=1.4.0-&gt;scikit-learn) (3.1.2)
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>trafilatura<span class="w"> </span>beautifulsoup4<span class="w"> </span>pandas<span class="w"> </span>requests
@@ -705,35 +728,155 @@ Requirement already satisfied: six&gt;=1.5 in D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\P
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [15/200] - SPORT
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [16/200] - SPORT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [17/200] - SPORT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [18/200] - SPORT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [19/200] - SPORT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [20/200] - SPORT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [21/200] - SPORT
-</pre></div>
-</div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">55</span>
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">line</span> <span class="mi">52</span>
+<span class="g g-Whitespace">     </span><span class="mi">48</span>             <span class="s1">'text'</span><span class="p">:</span> <span class="n">text</span>
+<span class="g g-Whitespace">     </span><span class="mi">49</span>         <span class="p">})</span>
+<span class="g g-Whitespace">     </span><span class="mi">50</span> 
 <span class="g g-Whitespace">     </span><span class="mi">51</span>         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Berhasil scrape [</span><span class="si">{</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">total_data</span><span class="si">}</span><span class="s2">] - </span><span class="si">{</span><span class="n">category</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">52</span>     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">52</span>     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 <span class="g g-Whitespace">     </span><span class="mi">53</span>         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Gagal pada URL </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">54</span> 
-<span class="ne">---&gt; </span><span class="mi">55</span>     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">56</span> 
-<span class="g g-Whitespace">     </span><span class="mi">57</span> <span class="c1"># 3. Buat DataFrame</span>
-<span class="g g-Whitespace">     </span><span class="mi">58</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_hasil</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">55</span>     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="nn">File D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages\requests\api.py:87,</span> in <span class="ni">get</span><span class="nt">(url, params, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">74</span> <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">75</span>     <span class="n">url</span><span class="p">:</span> <span class="n">_t</span><span class="o">.</span><span class="n">UriType</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">_t</span><span class="o">.</span><span class="n">ParamsType</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Unpack</span><span class="p">[</span><span class="n">_t</span><span class="o">.</span><span class="n">GetKwargs</span><span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">76</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">77</span><span class="w">     </span><span class="sa">r</span><span class="sd">"""Sends a GET request.</span>
+<span class="g g-Whitespace">     </span><span class="mi">78</span><span class="sd"> </span>
+<span class="g g-Whitespace">     </span><span class="mi">79</span><span class="sd">     :param url: URL for the new :class:`Request` object.</span>
+<span class="sd">   (...)     84     :rtype: requests.Response</span>
+<span class="g g-Whitespace">     </span><span class="mi">85</span><span class="sd">     """</span>
+<span class="ne">---&gt; </span><span class="mi">87</span>     <span class="k">return</span> <span class="n">request</span><span class="p">(</span><span class="s2">"get"</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages\requests\api.py:71,</span> in <span class="ni">request</span><span class="nt">(method, url, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">67</span> <span class="c1"># By using the 'with' statement we are sure the session is closed, thus we</span>
+<span class="g g-Whitespace">     </span><span class="mi">68</span> <span class="c1"># avoid leaving sockets open which can trigger a ResourceWarning in some</span>
+<span class="g g-Whitespace">     </span><span class="mi">69</span> <span class="c1"># cases, and look like a memory leak in others.</span>
+<span class="g g-Whitespace">     </span><span class="mi">70</span> <span class="k">with</span> <span class="n">sessions</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">71</span>     <span class="k">return</span> <span class="n">session</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages\requests\sessions.py:651,</span> in <span class="ni">Session.request</span><span class="nt">(self, method, url, params, data, headers, cookies, files, auth, timeout, allow_redirects, proxies, hooks, stream, verify, cert, json)</span>
+<span class="g g-Whitespace">    </span><span class="mi">646</span> <span class="n">send_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="g g-Whitespace">    </span><span class="mi">647</span>     <span class="s2">"timeout"</span><span class="p">:</span> <span class="n">timeout</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">648</span>     <span class="s2">"allow_redirects"</span><span class="p">:</span> <span class="n">allow_redirects</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">649</span> <span class="p">}</span>
+<span class="g g-Whitespace">    </span><span class="mi">650</span> <span class="n">send_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">651</span> <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">prep</span><span class="p">,</span> <span class="o">**</span><span class="n">send_kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">653</span> <span class="k">return</span> <span class="n">resp</span>
+
+<span class="nn">File D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages\requests\sessions.py:784,</span> in <span class="ni">Session.send</span><span class="nt">(self, request, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">781</span> <span class="n">start</span> <span class="o">=</span> <span class="n">preferred_clock</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">783</span> <span class="c1"># Send the request</span>
+<span class="ne">--&gt; </span><span class="mi">784</span> <span class="n">r</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">786</span> <span class="c1"># Total elapsed time of the request (approximately)</span>
+<span class="g g-Whitespace">    </span><span class="mi">787</span> <span class="n">elapsed</span> <span class="o">=</span> <span class="n">preferred_clock</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+
+<span class="nn">File D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages\requests\adapters.py:696,</span> in <span class="ni">HTTPAdapter.send</span><span class="nt">(self, request, stream, timeout, verify, cert, proxies)</span>
+<span class="g g-Whitespace">    </span><span class="mi">693</span>     <span class="n">resolved_timeout</span> <span class="o">=</span> <span class="n">TimeoutSauce</span><span class="p">(</span><span class="n">connect</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">read</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">695</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">696</span>     <span class="n">resp</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">697</span>         <span class="n">method</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">698</span>         <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">699</span>         <span class="n">body</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">,</span>  <span class="c1"># type: ignore[arg-type]  # urllib3 stubs don't accept Iterable[bytes | str]</span>
+<span class="g g-Whitespace">    </span><span class="mi">700</span>         <span class="n">headers</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span>  <span class="c1"># type: ignore[arg-type]  # urllib3#3072</span>
+<span class="g g-Whitespace">    </span><span class="mi">701</span>         <span class="n">redirect</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">702</span>         <span class="n">assert_same_host</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">703</span>         <span class="n">preload_content</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">704</span>         <span class="n">decode_content</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">705</span>         <span class="n">retries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">706</span>         <span class="n">timeout</span><span class="o">=</span><span class="n">resolved_timeout</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">707</span>         <span class="n">chunked</span><span class="o">=</span><span class="n">chunked</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">708</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">710</span> <span class="k">except</span> <span class="p">(</span><span class="n">ProtocolError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">)</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span>     <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">)</span>
+
+<span class="nn">File D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages\urllib3\connectionpool.py:788,</span> in <span class="ni">HTTPConnectionPool.urlopen</span><span class="nt">(self, method, url, body, headers, retries, redirect, assert_same_host, timeout, pool_timeout, release_conn, chunked, body_pos, preload_content, decode_content, **response_kw)</span>
+<span class="g g-Whitespace">    </span><span class="mi">785</span> <span class="n">response_conn</span> <span class="o">=</span> <span class="n">conn</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">release_conn</span> <span class="k">else</span> <span class="kc">None</span>
+<span class="g g-Whitespace">    </span><span class="mi">787</span> <span class="c1"># Make the request on the HTTPConnection object</span>
+<span class="ne">--&gt; </span><span class="mi">788</span> <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_request</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">789</span>     <span class="n">conn</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">790</span>     <span class="n">method</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">791</span>     <span class="n">url</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">792</span>     <span class="n">timeout</span><span class="o">=</span><span class="n">timeout_obj</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">793</span>     <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">794</span>     <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">795</span>     <span class="n">chunked</span><span class="o">=</span><span class="n">chunked</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">796</span>     <span class="n">retries</span><span class="o">=</span><span class="n">retries</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">797</span>     <span class="n">response_conn</span><span class="o">=</span><span class="n">response_conn</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">798</span>     <span class="n">preload_content</span><span class="o">=</span><span class="n">preload_content</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">799</span>     <span class="n">decode_content</span><span class="o">=</span><span class="n">decode_content</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">800</span>     <span class="o">**</span><span class="n">response_kw</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">801</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">803</span> <span class="c1"># Everything went great!</span>
+<span class="g g-Whitespace">    </span><span class="mi">804</span> <span class="n">clean_exit</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="nn">File D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages\urllib3\connectionpool.py:464,</span> in <span class="ni">HTTPConnectionPool._make_request</span><span class="nt">(self, conn, method, url, body, headers, retries, timeout, chunked, response_conn, preload_content, decode_content, enforce_content_length)</span>
+<span class="g g-Whitespace">    </span><span class="mi">461</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">462</span>     <span class="c1"># Trigger any extra validation we need to do.</span>
+<span class="g g-Whitespace">    </span><span class="mi">463</span>     <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">464</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_conn</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">465</span>     <span class="k">except</span> <span class="p">(</span><span class="n">SocketTimeout</span><span class="p">,</span> <span class="n">BaseSSLError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">466</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_raise_timeout</span><span class="p">(</span><span class="n">err</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout_value</span><span class="o">=</span><span class="n">conn</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span>
+
+<span class="nn">File D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages\urllib3\connectionpool.py:1106,</span> in <span class="ni">HTTPSConnectionPool._validate_conn</span><span class="nt">(self, conn)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1104</span> <span class="c1"># Force connect early to allow us to validate the connection.</span>
+<span class="g g-Whitespace">   </span><span class="mi">1105</span> <span class="k">if</span> <span class="n">conn</span><span class="o">.</span><span class="n">is_closed</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1106</span>     <span class="n">conn</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1108</span> <span class="c1"># TODO revise this, see https://github.com/urllib3/urllib3/issues/2791</span>
+<span class="g g-Whitespace">   </span><span class="mi">1109</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">conn</span><span class="o">.</span><span class="n">is_verified</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">conn</span><span class="o">.</span><span class="n">proxy_is_verified</span><span class="p">:</span>
+
+<span class="nn">File D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages\urllib3\connection.py:796,</span> in <span class="ni">HTTPSConnection.connect</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">793</span>     <span class="c1"># Remove trailing '.' from fqdn hostnames to allow certificate validation</span>
+<span class="g g-Whitespace">    </span><span class="mi">794</span>     <span class="n">server_hostname_rm_dot</span> <span class="o">=</span> <span class="n">server_hostname</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">796</span>     <span class="n">sock_and_verified</span> <span class="o">=</span> <span class="n">_ssl_wrap_socket_and_match_hostname</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">797</span>         <span class="n">sock</span><span class="o">=</span><span class="n">sock</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">798</span>         <span class="n">cert_reqs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cert_reqs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">799</span>         <span class="n">ssl_version</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ssl_version</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">800</span>         <span class="n">ssl_minimum_version</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ssl_minimum_version</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">801</span>         <span class="n">ssl_maximum_version</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ssl_maximum_version</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">802</span>         <span class="n">ca_certs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ca_certs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">803</span>         <span class="n">ca_cert_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ca_cert_dir</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">804</span>         <span class="n">ca_cert_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ca_cert_data</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">805</span>         <span class="n">cert_file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cert_file</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">806</span>         <span class="n">key_file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">key_file</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">807</span>         <span class="n">key_password</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">key_password</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">808</span>         <span class="n">server_hostname</span><span class="o">=</span><span class="n">server_hostname_rm_dot</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">809</span>         <span class="n">ssl_context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ssl_context</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">810</span>         <span class="n">tls_in_tls</span><span class="o">=</span><span class="n">tls_in_tls</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">811</span>         <span class="n">assert_hostname</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">assert_hostname</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">812</span>         <span class="n">assert_fingerprint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">assert_fingerprint</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">813</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">814</span>     <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="n">sock_and_verified</span><span class="o">.</span><span class="n">socket</span>
+<span class="g g-Whitespace">    </span><span class="mi">816</span> <span class="c1"># If an error occurs during connection/handshake we may need to release</span>
+<span class="g g-Whitespace">    </span><span class="mi">817</span> <span class="c1"># our lock so another connection can probe the origin.</span>
+
+<span class="nn">File D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages\urllib3\connection.py:975,</span> in <span class="ni">_ssl_wrap_socket_and_match_hostname</span><span class="nt">(sock, cert_reqs, ssl_version, ssl_minimum_version, ssl_maximum_version, cert_file, key_file, key_password, ca_certs, ca_cert_dir, ca_cert_data, assert_hostname, assert_fingerprint, server_hostname, ssl_context, tls_in_tls)</span>
+<span class="g g-Whitespace">    </span><span class="mi">972</span>     <span class="k">if</span> <span class="n">is_ipaddress</span><span class="p">(</span><span class="n">normalized</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">973</span>         <span class="n">server_hostname</span> <span class="o">=</span> <span class="n">normalized</span>
+<span class="ne">--&gt; </span><span class="mi">975</span> <span class="n">ssl_sock</span> <span class="o">=</span> <span class="n">ssl_wrap_socket</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">976</span>     <span class="n">sock</span><span class="o">=</span><span class="n">sock</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">977</span>     <span class="n">keyfile</span><span class="o">=</span><span class="n">key_file</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">978</span>     <span class="n">certfile</span><span class="o">=</span><span class="n">cert_file</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">979</span>     <span class="n">key_password</span><span class="o">=</span><span class="n">key_password</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">980</span>     <span class="n">ca_certs</span><span class="o">=</span><span class="n">ca_certs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">981</span>     <span class="n">ca_cert_dir</span><span class="o">=</span><span class="n">ca_cert_dir</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">982</span>     <span class="n">ca_cert_data</span><span class="o">=</span><span class="n">ca_cert_data</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">983</span>     <span class="n">server_hostname</span><span class="o">=</span><span class="n">server_hostname</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">984</span>     <span class="n">ssl_context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">985</span>     <span class="n">tls_in_tls</span><span class="o">=</span><span class="n">tls_in_tls</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">986</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">988</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">989</span>     <span class="k">if</span> <span class="n">assert_fingerprint</span><span class="p">:</span>
+
+<span class="nn">File D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages\urllib3\util\ssl_.py:411,</span> in <span class="ni">ssl_wrap_socket</span><span class="nt">(sock, keyfile, certfile, cert_reqs, ca_certs, server_hostname, ssl_version, ciphers, ssl_context, ca_cert_dir, key_password, ca_cert_data, tls_in_tls)</span>
+<span class="g g-Whitespace">    </span><span class="mi">409</span> <span class="k">if</span> <span class="n">ca_certs</span> <span class="ow">or</span> <span class="n">ca_cert_dir</span> <span class="ow">or</span> <span class="n">ca_cert_data</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">410</span>     <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">411</span>         <span class="n">context</span><span class="o">.</span><span class="n">load_verify_locations</span><span class="p">(</span><span class="n">ca_certs</span><span class="p">,</span> <span class="n">ca_cert_dir</span><span class="p">,</span> <span class="n">ca_cert_data</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">412</span>     <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">413</span>         <span class="k">raise</span> <span class="n">SSLError</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 
 <span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
@@ -789,33 +932,33 @@ Requirement already satisfied: six&gt;=1.5 in D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\P
   <tbody>
     <tr>
       <th>0</th>
-      <td>https://sport.detik.com/sport-lain/d-8655067/k...</td>
+      <td>https://sport.detik.com/raket/d-8656258/mens-w...</td>
       <td>sport</td>
-      <td>Ketum KOI dan Menpora Mengukuhkan Tim Indonesi...</td>
-      <td>Rabu, 09 Sep 2026 11:50 WIB</td>
-      <td>Ketua Umum Komite Olimpiade Indonesia (KOI) Ra...</td>
-      <td>70</td>
-      <td>2832</td>
+      <td>Men's World Tennis Championship: Rifqi dan Raf...</td>
+      <td>Kamis, 10 Sep 2026 04:42 WIB</td>
+      <td>Dua petenis Indonesia, Muhammad Rifqi Fitriadi...</td>
+      <td>73</td>
+      <td>1489</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>https://sport.detik.com/moto-gp/d-8654776/moto...</td>
+      <td>https://sport.detik.com/raket/d-8656218/kevin-...</td>
       <td>sport</td>
-      <td>MotoGP San Marino 2026: Jaga Puncak Klasemen B...</td>
-      <td>Rabu, 09 Sep 2026 08:52 WIB</td>
-      <td>Persaingan titel juara dunia semakin ketat men...</td>
-      <td>73</td>
-      <td>1503</td>
+      <td>Kevin Sanjaya Antusias Lihat Semangat Talenta ...</td>
+      <td>Kamis, 10 Sep 2026 01:15 WIB</td>
+      <td>Audisi Umum PB Djarum 2026 sedang berlangsung ...</td>
+      <td>67</td>
+      <td>1829</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>https://sport.detik.com/raket/d-8654666/ganda-...</td>
+      <td>https://sport.detik.com/sport-lain/d-8656170/a...</td>
       <td>sport</td>
-      <td>Ganda Campuran Indonesia Kembali Rombak Pemain</td>
-      <td>Rabu, 09 Sep 2026 06:45 WIB</td>
-      <td>Sektor ganda campuran kembali mengalami peromb...</td>
-      <td>46</td>
-      <td>1442</td>
+      <td>Atlet Muda Modern Pentathlon Punya Kesempatan ...</td>
+      <td>Rabu, 09 Sep 2026 23:50 WIB</td>
+      <td>Modern Pentathlon akan dipertandingkan dalam m...</td>
+      <td>63</td>
+      <td>2861</td>
     </tr>
   </tbody>
 </table>
@@ -852,33 +995,33 @@ Requirement already satisfied: six&gt;=1.5 in D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\P
   <tbody>
     <tr>
       <th>197</th>
-      <td>https://finance.detik.com/berita-ekonomi-bisni...</td>
+      <td>https://finance.detik.com/energi/d-8654238/per...</td>
       <td>finance</td>
-      <td>Kemenhub Ungkap Biang Kerok Kemacetan Panjang ...</td>
-      <td>Selasa, 08 Sep 2026 08:10 WIB</td>
-      <td>Penanganan insentif terus dilakukan untuk meng...</td>
-      <td>64</td>
-      <td>3212</td>
+      <td>Pertamina Waspada Solar Subsidi 'Bocor', Selis...</td>
+      <td>Selasa, 08 Sep 2026 17:53 WIB</td>
+      <td>PT Pertamina Patra Niaga mewaspadai adanya pot...</td>
+      <td>71</td>
+      <td>1682</td>
     </tr>
     <tr>
       <th>198</th>
       <td>https://finance.detik.com/berita-ekonomi-bisni...</td>
       <td>finance</td>
-      <td>Bandara Soetta-Husein Siap Beroperasi Lagi Usa...</td>
-      <td>Selasa, 08 Sep 2026 07:38 WIB</td>
-      <td>InJourney Airports menjamin kesiapan operasion...</td>
-      <td>54</td>
-      <td>2702</td>
+      <td>TikTok &amp; Tokopedia Buka Suara soal Kabar Bloki...</td>
+      <td>Selasa, 08 Sep 2026 17:43 WIB</td>
+      <td>Tokopedia dan TikTok Shop buka suara terkait l...</td>
+      <td>66</td>
+      <td>3217</td>
     </tr>
     <tr>
       <th>199</th>
-      <td>https://finance.detik.com/moneter/d-8653044/pi...</td>
+      <td>https://finance.detik.com/berita-ekonomi-bisni...</td>
       <td>finance</td>
-      <td>Pinjaman Online Warga RI Makin Banyak, Tembus ...</td>
-      <td>Selasa, 08 Sep 2026 07:25 WIB</td>
-      <td>Otoritas Jasa Keuangan (OJK) mencatat total ut...</td>
-      <td>60</td>
-      <td>1530</td>
+      <td>Purbaya Ngaku Tak Pusingkan Anggaran BGN, Tahu...</td>
+      <td>Selasa, 08 Sep 2026 17:32 WIB</td>
+      <td>Menteri Keuangan (Menkeu) Purbaya Yudhi Sadewa...</td>
+      <td>71</td>
+      <td>1889</td>
     </tr>
   </tbody>
 </table>
@@ -957,53 +1100,53 @@ Requirement already satisfied: six&gt;=1.5 in D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\P
   <tbody>
     <tr>
       <th>0</th>
-      <td>https://sport.detik.com/sport-lain/d-8655067/k...</td>
+      <td>https://sport.detik.com/raket/d-8656258/mens-w...</td>
       <td>sport</td>
-      <td>Ketum KOI dan Menpora Mengukuhkan Tim Indonesi...</td>
-      <td>Rabu, 09 Sep 2026 11:50 WIB</td>
-      <td>Ketua Umum Komite Olimpiade Indonesia (KOI) Ra...</td>
-      <td>70</td>
-      <td>2832</td>
+      <td>Men's World Tennis Championship: Rifqi dan Raf...</td>
+      <td>Kamis, 10 Sep 2026 04:42 WIB</td>
+      <td>Dua petenis Indonesia, Muhammad Rifqi Fitriadi...</td>
+      <td>73</td>
+      <td>1489</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>https://sport.detik.com/moto-gp/d-8654776/moto...</td>
+      <td>https://sport.detik.com/raket/d-8656218/kevin-...</td>
       <td>sport</td>
-      <td>MotoGP San Marino 2026: Jaga Puncak Klasemen B...</td>
-      <td>Rabu, 09 Sep 2026 08:52 WIB</td>
-      <td>Persaingan titel juara dunia semakin ketat men...</td>
-      <td>73</td>
-      <td>1503</td>
+      <td>Kevin Sanjaya Antusias Lihat Semangat Talenta ...</td>
+      <td>Kamis, 10 Sep 2026 01:15 WIB</td>
+      <td>Audisi Umum PB Djarum 2026 sedang berlangsung ...</td>
+      <td>67</td>
+      <td>1829</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>https://sport.detik.com/raket/d-8654666/ganda-...</td>
+      <td>https://sport.detik.com/sport-lain/d-8656170/a...</td>
       <td>sport</td>
-      <td>Ganda Campuran Indonesia Kembali Rombak Pemain</td>
-      <td>Rabu, 09 Sep 2026 06:45 WIB</td>
-      <td>Sektor ganda campuran kembali mengalami peromb...</td>
-      <td>46</td>
-      <td>1442</td>
+      <td>Atlet Muda Modern Pentathlon Punya Kesempatan ...</td>
+      <td>Rabu, 09 Sep 2026 23:50 WIB</td>
+      <td>Modern Pentathlon akan dipertandingkan dalam m...</td>
+      <td>63</td>
+      <td>2861</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>https://sport.detik.com/sport-lain/d-8654641/a...</td>
+      <td>https://sport.detik.com/sport-lain/d-8656176/r...</td>
       <td>sport</td>
-      <td>Ambisi Morgan Holindo Jadi Juara Nasional Esha...</td>
-      <td>Rabu, 09 Sep 2026 02:10 WIB</td>
-      <td>Pegokar muda Indonesia, Morgan Holindo, tak pu...</td>
-      <td>61</td>
-      <td>1629</td>
+      <td>Romy Tahrizi Juara Nasional Shifter 2026 Bersa...</td>
+      <td>Rabu, 09 Sep 2026 23:15 WIB</td>
+      <td>Kejuaraan Nasional Gokart 2026 yang berlangsun...</td>
+      <td>60</td>
+      <td>4791</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>https://sport.detik.com/raket/d-8654637/mens-w...</td>
+      <td>https://sport.detik.com/sport-lain/d-8656181/a...</td>
       <td>sport</td>
-      <td>Men's World Tennis Championship: Hari Baik unt...</td>
-      <td>Rabu, 09 Sep 2026 01:10 WIB</td>
-      <td>Seri V Men's World Tennis Championship 2026 su...</td>
-      <td>57</td>
-      <td>1689</td>
+      <td>Asian Games: Ketum PBTI Yakin Taekwondo Bisa B...</td>
+      <td>Rabu, 09 Sep 2026 22:22 WIB</td>
+      <td>Asian Games 2026 tak lama lagi akan dimulai. K...</td>
+      <td>74</td>
+      <td>1624</td>
     </tr>
   </tbody>
 </table>
@@ -1042,51 +1185,51 @@ Requirement already satisfied: six&gt;=1.5 in D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\P
       <th>195</th>
       <td>https://finance.detik.com/berita-ekonomi-bisni...</td>
       <td>finance</td>
-      <td>17 Perjalanan KRL Dibatalkan Imbas Perawatan A...</td>
-      <td>Selasa, 08 Sep 2026 08:27 WIB</td>
-      <td>Penyesuaian jadwal Commuter Line Jabodetabek t...</td>
-      <td>63</td>
-      <td>2615</td>
+      <td>TelkomProperty Ungkap Pemanfaatan Graha Merah ...</td>
+      <td>Selasa, 08 Sep 2026 18:50 WIB</td>
+      <td>PT Graha Sarana Duta (TelkomProperty), sebagai...</td>
+      <td>76</td>
+      <td>1948</td>
     </tr>
     <tr>
       <th>196</th>
-      <td>https://finance.detik.com/bursa-dan-valas/d-86...</td>
+      <td>https://finance.detik.com/berita-ekonomi-bisni...</td>
       <td>finance</td>
-      <td>Transisi Bisnis, TBS Energi (TOBA) Jadi Saham ...</td>
-      <td>Selasa, 08 Sep 2026 08:19 WIB</td>
-      <td>PT TBS Energi Utama Tbk (TOBA) menjadi perusah...</td>
-      <td>63</td>
-      <td>4728</td>
+      <td>Harga Masker Mahal Imbas Abu Anak Krakatau, Pe...</td>
+      <td>Selasa, 08 Sep 2026 17:58 WIB</td>
+      <td>Ketua Badan Perlindungan Konsumen Nasional (BP...</td>
+      <td>71</td>
+      <td>2205</td>
     </tr>
     <tr>
       <th>197</th>
-      <td>https://finance.detik.com/berita-ekonomi-bisni...</td>
+      <td>https://finance.detik.com/energi/d-8654238/per...</td>
       <td>finance</td>
-      <td>Kemenhub Ungkap Biang Kerok Kemacetan Panjang ...</td>
-      <td>Selasa, 08 Sep 2026 08:10 WIB</td>
-      <td>Penanganan insentif terus dilakukan untuk meng...</td>
-      <td>64</td>
-      <td>3212</td>
+      <td>Pertamina Waspada Solar Subsidi 'Bocor', Selis...</td>
+      <td>Selasa, 08 Sep 2026 17:53 WIB</td>
+      <td>PT Pertamina Patra Niaga mewaspadai adanya pot...</td>
+      <td>71</td>
+      <td>1682</td>
     </tr>
     <tr>
       <th>198</th>
       <td>https://finance.detik.com/berita-ekonomi-bisni...</td>
       <td>finance</td>
-      <td>Bandara Soetta-Husein Siap Beroperasi Lagi Usa...</td>
-      <td>Selasa, 08 Sep 2026 07:38 WIB</td>
-      <td>InJourney Airports menjamin kesiapan operasion...</td>
-      <td>54</td>
-      <td>2702</td>
+      <td>TikTok &amp; Tokopedia Buka Suara soal Kabar Bloki...</td>
+      <td>Selasa, 08 Sep 2026 17:43 WIB</td>
+      <td>Tokopedia dan TikTok Shop buka suara terkait l...</td>
+      <td>66</td>
+      <td>3217</td>
     </tr>
     <tr>
       <th>199</th>
-      <td>https://finance.detik.com/moneter/d-8653044/pi...</td>
+      <td>https://finance.detik.com/berita-ekonomi-bisni...</td>
       <td>finance</td>
-      <td>Pinjaman Online Warga RI Makin Banyak, Tembus ...</td>
-      <td>Selasa, 08 Sep 2026 07:25 WIB</td>
-      <td>Otoritas Jasa Keuangan (OJK) mencatat total ut...</td>
-      <td>60</td>
-      <td>1530</td>
+      <td>Purbaya Ngaku Tak Pusingkan Anggaran BGN, Tahu...</td>
+      <td>Selasa, 08 Sep 2026 17:32 WIB</td>
+      <td>Menteri Keuangan (Menkeu) Purbaya Yudhi Sadewa...</td>
+      <td>71</td>
+      <td>1889</td>
     </tr>
   </tbody>
 </table>
@@ -1099,7 +1242,7 @@ Data columns (total 7 columns):
  0   url           200 non-null    str  
  1   category      200 non-null    str  
  2   title         200 non-null    str  
- 3   date          196 non-null    str  
+ 3   date          197 non-null    str  
  4   text          200 non-null    str  
  5   title_length  200 non-null    int64
  6   text_length   200 non-null    int64
@@ -1110,7 +1253,7 @@ memory usage: 11.1 KB
 url             0
 category        0
 title           0
-date            4
+date            3
 text            0
 title_length    0
 text_length     0
@@ -1155,13 +1298,13 @@ Name: count, dtype: int64
     </tr>
     <tr>
       <th>mean</th>
-      <td>59.515000</td>
-      <td>2371.555000</td>
+      <td>59.780000</td>
+      <td>2344.615000</td>
     </tr>
     <tr>
       <th>std</th>
-      <td>11.710914</td>
-      <td>1137.449371</td>
+      <td>11.747409</td>
+      <td>1083.145687</td>
     </tr>
     <tr>
       <th>min</th>
@@ -1170,22 +1313,22 @@ Name: count, dtype: int64
     </tr>
     <tr>
       <th>25%</th>
-      <td>52.750000</td>
-      <td>1699.500000</td>
+      <td>52.000000</td>
+      <td>1677.000000</td>
     </tr>
     <tr>
       <th>50%</th>
-      <td>61.000000</td>
-      <td>2183.500000</td>
+      <td>61.500000</td>
+      <td>2156.500000</td>
     </tr>
     <tr>
       <th>75%</th>
-      <td>68.250000</td>
-      <td>2681.000000</td>
+      <td>69.000000</td>
+      <td>2691.250000</td>
     </tr>
     <tr>
       <th>max</th>
-      <td>80.000000</td>
+      <td>85.000000</td>
       <td>8169.000000</td>
     </tr>
   </tbody>
@@ -1197,6 +1340,641 @@ Duplikat berdasarkan Judul: 0
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># convert csv</span>
+<span class="c1"># Menampilkan informasi ringkas setelah digabung</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total baris dataset gabungan: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Distribusi kategori:</span><span class="se">\n</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'category'</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Menyimpan dataset gabungan ke file CSV</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">'dataset/hasil_scrapping_detik_200.csv'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">File berhasil digabung dan disimpan sebagai 'dataset/hasil_scrapping_detik_200.csv'"</span><span class="p">)</span>
+
+<span class="c1"># Menampilkan 2 sampel teratas dari dataframe gabungan</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total baris dataset gabungan: 200
+Distribusi kategori:
+category
+sport      100
+finance    100
+Name: count, dtype: int64
+
+File berhasil digabung dan disimpan sebagai 'dataset/hasil_scrapping_detik_200.csv'
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>url</th>
+      <th>category</th>
+      <th>title</th>
+      <th>date</th>
+      <th>text</th>
+      <th>title_length</th>
+      <th>text_length</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>https://sport.detik.com/raket/d-8656258/mens-w...</td>
+      <td>sport</td>
+      <td>Men's World Tennis Championship: Rifqi dan Raf...</td>
+      <td>Kamis, 10 Sep 2026 04:42 WIB</td>
+      <td>Dua petenis Indonesia, Muhammad Rifqi Fitriadi...</td>
+      <td>73</td>
+      <td>1489</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>https://sport.detik.com/raket/d-8656218/kevin-...</td>
+      <td>sport</td>
+      <td>Kevin Sanjaya Antusias Lihat Semangat Talenta ...</td>
+      <td>Kamis, 10 Sep 2026 01:15 WIB</td>
+      <td>Audisi Umum PB Djarum 2026 sedang berlangsung ...</td>
+      <td>67</td>
+      <td>1829</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="preprocessing">
+<h2><strong>Preprocessing</strong><a class="headerlink" href="#preprocessing" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Memuat dataset yang sudah disimpan sebelumnya</span>
+<span class="c1"># Sesuaikan path jika lokasi folder berbeda (misal: 'hasil_scrapping_detik_200.csv' atau 'dataset/hasil_scrapping_detik_200.csv')</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'dataset/hasil_scrapping_detik_200.csv'</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Data berhasil dimuat! Jumlah total baris: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data berhasil dimuat! Jumlah total baris: 200
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>url</th>
+      <th>category</th>
+      <th>title</th>
+      <th>date</th>
+      <th>text</th>
+      <th>title_length</th>
+      <th>text_length</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>https://sport.detik.com/raket/d-8656258/mens-w...</td>
+      <td>sport</td>
+      <td>Men's World Tennis Championship: Rifqi dan Raf...</td>
+      <td>Kamis, 10 Sep 2026 04:42 WIB</td>
+      <td>Dua petenis Indonesia, Muhammad Rifqi Fitriadi...</td>
+      <td>73</td>
+      <td>1489</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>https://sport.detik.com/raket/d-8656218/kevin-...</td>
+      <td>sport</td>
+      <td>Kevin Sanjaya Antusias Lihat Semangat Talenta ...</td>
+      <td>Kamis, 10 Sep 2026 01:15 WIB</td>
+      <td>Audisi Umum PB Djarum 2026 sedang berlangsung ...</td>
+      <td>67</td>
+      <td>1829</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>https://sport.detik.com/sport-lain/d-8656170/a...</td>
+      <td>sport</td>
+      <td>Atlet Muda Modern Pentathlon Punya Kesempatan ...</td>
+      <td>Rabu, 09 Sep 2026 23:50 WIB</td>
+      <td>Modern Pentathlon akan dipertandingkan dalam m...</td>
+      <td>63</td>
+      <td>2861</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>https://sport.detik.com/sport-lain/d-8656176/r...</td>
+      <td>sport</td>
+      <td>Romy Tahrizi Juara Nasional Shifter 2026 Bersa...</td>
+      <td>Rabu, 09 Sep 2026 23:15 WIB</td>
+      <td>Kejuaraan Nasional Gokart 2026 yang berlangsun...</td>
+      <td>60</td>
+      <td>4791</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>https://sport.detik.com/sport-lain/d-8656181/a...</td>
+      <td>sport</td>
+      <td>Asian Games: Ketum PBTI Yakin Taekwondo Bisa B...</td>
+      <td>Rabu, 09 Sep 2026 22:22 WIB</td>
+      <td>Asian Games 2026 tak lama lagi akan dimulai. K...</td>
+      <td>74</td>
+      <td>1624</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<section id="cleaning-data">
+<h3><strong>Cleaning Data</strong><a class="headerlink" href="#cleaning-data" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">CountVectorizer</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
+
+<span class="c1"># Daftar stopword sederhana Bahasa Indonesia untuk menyaring kata tugas</span>
+<span class="n">stopwords_indonesia</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span>
+    <span class="s1">'dan'</span><span class="p">,</span> <span class="s1">'yang'</span><span class="p">,</span> <span class="s1">'di'</span><span class="p">,</span> <span class="s1">'ke'</span><span class="p">,</span> <span class="s1">'dari'</span><span class="p">,</span> <span class="s1">'ini'</span><span class="p">,</span> <span class="s1">'itu'</span><span class="p">,</span> <span class="s1">'untuk'</span><span class="p">,</span>
+    <span class="s1">'pada'</span><span class="p">,</span> <span class="s1">'dengan'</span><span class="p">,</span> <span class="s1">'adakah'</span><span class="p">,</span> <span class="s1">'sebagai'</span><span class="p">,</span> <span class="s1">'oleh'</span><span class="p">,</span> <span class="s1">'karena'</span><span class="p">,</span>
+    <span class="s1">'bahwa'</span><span class="p">,</span> <span class="s1">'atau'</span><span class="p">,</span> <span class="s1">'dalam'</span><span class="p">,</span> <span class="s1">'mereka'</span><span class="p">,</span> <span class="s1">'nya'</span><span class="p">,</span> <span class="s1">'tersebut'</span><span class="p">,</span>
+    <span class="s1">'juga'</span><span class="p">,</span> <span class="s1">'akan'</span><span class="p">,</span> <span class="s1">'terhadap'</span><span class="p">,</span> <span class="s1">'secara'</span><span class="p">,</span> <span class="s1">'dapat'</span><span class="p">,</span> <span class="s1">'bagi'</span><span class="p">,</span>
+    <span class="s1">'sudah'</span>
+<span class="p">])</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">advanced_preprocessing</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">""</span>
+
+    <span class="c1"># 1. Case Folding (Ubah ke huruf kecil semua)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="c1"># 2. Hapus tautan/URL</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">'https?://\S+|www\.\S+'</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="c1"># 3. Hapus angka</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">'\d+'</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="c1"># 4. Hapus tanda baca (titik, koma, tanda seru, dll)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="n">string</span><span class="o">.</span><span class="n">punctuation</span><span class="p">))</span>
+    
+    <span class="c1"># Hapus stopword dan kata yang terlalu pendek (1-2 huruf)</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">filtered_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span> <span class="k">if</span> <span class="n">w</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stopwords_indonesia</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filtered_words</span><span class="p">)</span>
+
+<span class="c1"># Terapkan ulang preprocessing yang lebih bersih</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'clean_text'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'text'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">advanced_preprocessing</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">" hasil teks setelah preprocessing:"</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">'text'</span><span class="p">,</span> <span class="s1">'clean_text'</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> hasil teks setelah preprocessing:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>text</th>
+      <th>clean_text</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Dua petenis Indonesia, Muhammad Rifqi Fitriadi...</td>
+      <td>dua petenis indonesia muhammad rifqi fitriadi ...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Audisi Umum PB Djarum 2026 sedang berlangsung ...</td>
+      <td>audisi umum djarum sedang berlangsung kudus ke...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Modern Pentathlon akan dipertandingkan dalam m...</td>
+      <td>modern pentathlon dipertandingkan momen hari u...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Kejuaraan Nasional Gokart 2026 yang berlangsun...</td>
+      <td>kejuaraan nasional gokart berlangsung enam put...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="ekstrak-kata-unik">
+<h3><strong>Ekstrak kata unik</strong><a class="headerlink" href="#ekstrak-kata-unik" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">CountVectorizer</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># 1. Inisialisasi CountVectorizer untuk mengekstrak seluruh kata unik</span>
+<span class="c1"># min_df=2 artinya kata harus muncul minimal di 2 dokumen agar dicatat sebagai fitur</span>
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">min_df</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># 2. Proses ekstraksi kata unik dari kolom 'clean_text'</span>
+<span class="n">X_count</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'clean_text'</span><span class="p">])</span>
+<span class="c1"># 3. Ubah hasil sparse matrix menjadi Pandas DataFrame (kolom = kata unik, baris = dokumen)</span>
+<span class="n">df_bow</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X_count</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+<span class="c1"># 4. Tambahkan kolom label sesuai permintaan (sport: 1, finance: 2)</span>
+<span class="n">df_bow</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'category'</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">({</span><span class="s1">'sport'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'finance'</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah dokumen: </span><span class="si">{</span><span class="n">df_bow</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> baris"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah kata unik setelah difilter: </span><span class="si">{</span><span class="n">df_bow</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2"> kata unik"</span><span class="p">)</span>
+
+<span class="c1"># Tampilkan beberapa kolom pertama dan kolom label terakhir dari matriks</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_bow</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">df_bow</span><span class="p">[</span><span class="s1">'label'</span><span class="p">])</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah dokumen: 200 baris
+Jumlah kata unik setelah difilter: 3565 kata unik
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>aau</th>
+      <th>abdul</th>
+      <th>absen</th>
+      <th>abu</th>
+      <th>acara</th>
+      <th>accurate</th>
+      <th>acdacd</th>
+      <th>aceh</th>
+      <th>acehsumut</th>
+      <th>achmad</th>
+      <th>label</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="penerapan-tf-idf">
+<h3><strong>Penerapan TF-IDF</strong><a class="headerlink" href="#penerapan-tf-idf" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># 1. Inisialisasi TfidfVectorizer</span>
+<span class="c1"># Kita menggunakan parameter min_df=2 yang sama seperti sebelumnya agar kata yang terlalu langka tersaring</span>
+<span class="n">tfidf_vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">min_df</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># 2. Fit and transform teks yang sudah dibersihkan (clean_text)</span>
+<span class="n">X_tfidf</span> <span class="o">=</span> <span class="n">tfidf_vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'clean_text'</span><span class="p">])</span>
+
+<span class="c1"># 3. Ubah hasil matrix sparse TF-IDF menjadi Pandas DataFrame</span>
+<span class="n">df_tfidf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X_tfidf</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">tfidf_vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">())</span>
+
+<span class="c1"># 4. Tambahkan kembali kolom label (sport: 1, finance: 2) di ujung DataFrame</span>
+<span class="n">df_tfidf</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'category'</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">({</span><span class="s1">'sport'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'finance'</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Representasi TF-IDF berhasil dibuat!"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Ukuran Dataset TF-IDF: </span><span class="si">{</span><span class="n">df_tfidf</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> baris dokumen dan </span><span class="si">{</span><span class="n">df_tfidf</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2"> kolom kata unik (+ 1 kolom label)"</span><span class="p">)</span>
+
+<span class="c1"># Tampilkan 5 baris pertama dan terakhir dari beberapa kolom kata pertama dan kolom label</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_tfidf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">df_tfidf</span><span class="p">[</span><span class="s1">'label'</span><span class="p">])</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_tfidf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">df_tfidf</span><span class="p">[</span><span class="s1">'label'</span><span class="p">])</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Representasi TF-IDF berhasil dibuat!
+Ukuran Dataset TF-IDF: 200 baris dokumen dan 3565 kolom kata unik (+ 1 kolom label)
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>aau</th>
+      <th>abdul</th>
+      <th>absen</th>
+      <th>abu</th>
+      <th>acara</th>
+      <th>accurate</th>
+      <th>acdacd</th>
+      <th>aceh</th>
+      <th>label</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.041044</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.00000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.03297</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.00000</td>
+      <td>0.067224</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>aau</th>
+      <th>abdul</th>
+      <th>absen</th>
+      <th>abu</th>
+      <th>acara</th>
+      <th>accurate</th>
+      <th>acdacd</th>
+      <th>aceh</th>
+      <th>label</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>195</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>196</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.106939</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.043325</td>
+      <td>0.0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>197</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>198</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.036454</td>
+      <td>0.0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>199</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.051251</td>
+      <td>0.0</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
 </section>
 </section>
 
@@ -1230,6 +2008,15 @@ Duplikat berdasarkan Judul: 0
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Welcome to My Jupyter Book Matakuliah PPW</p>
+      </div>
+    </a>
 </div>
                 </footer>
               
@@ -1253,6 +2040,12 @@ Duplikat berdasarkan Judul: 0
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-2-proses-scrapping-menggunakan-trafilatura"><strong>Langkah 2: Proses Scrapping Menggunakan Trafilatura</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-3-menampilkan-hasil"><strong>Langkah 3: Menampilkan Hasil</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-understanding"><strong>Data Understanding</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocessing"><strong>Preprocessing</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cleaning-data"><strong>Cleaning Data</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstrak-kata-unik"><strong>Ekstrak kata unik</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penerapan-tf-idf"><strong>Penerapan TF-IDF</strong></a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
