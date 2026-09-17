@@ -37,8 +37,8 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-['import trafilatura', 'import requests', 'from bs4 import BeautifulSoup', 'import pandas as pd', 'import time']
+['import requests', 'from bs4 import BeautifulSoup', 'import time', 'import pandas as pd', '']
 ...
-['df = pd.DataFrame(data_hasil)', '', "# 4. Tambahkan kolom panjang karakter dengan perlindungan fillna('') agar terhindar dari TypeError", "df['title_length'] = df['title'].fillna('').astype(str).apply(len)", "df['text_length'] = df['text'].fillna('').astype(str).apply(len)"]
+[')', '', '# Gabungkan menjadi satu list total 200 URL', 'all_target_urls = sport_urls + finance_urls', 'print(f"\\nTotal keseluruhan URL terkumpul: {len(all_target_urls)} URL (100 Sport, 100 Finance).")']
 -------------------
 

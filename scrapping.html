@@ -60,6 +60,8 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'scrapping';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -414,13 +416,14 @@
                 <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#persiapan-library"><strong>Persiapan Library</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-1-mengumpulkan-200-url-artikel-detik-com"><strong>Langkah 1: Mengumpulkan 200 URL Artikel Detik.com</strong></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-2-proses-scrapping-menggunakan-trafilatura"><strong>Langkah 2: Proses Scrapping Menggunakan Trafilatura</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-2-proses-scraping-menggunakan-trafilatura"><strong>Langkah 2: Proses Scraping Menggunakan Trafilatura</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-3-menampilkan-hasil"><strong>Langkah 3: Menampilkan Hasil</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-understanding"><strong>Data Understanding</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocessing"><strong>Preprocessing</strong></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cleaning-data"><strong>Cleaning Data</strong></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstrak-kata-unik"><strong>Ekstrak kata unik</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstrak-kata-unik"><strong>Ekstrak Kata Unik</strong></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penerapan-tf-idf"><strong>Penerapan TF-IDF</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penerapan-pca"><strong>Penerapan PCA</strong></a></li>
 </ul>
 </li>
 </ul>
@@ -436,6 +439,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="scrapping-data">
 <h1><strong>Scrapping Data</strong><a class="headerlink" href="#scrapping-data" title="Link to this heading">#</a></h1>
+<p>Scraping data adalah proses otomatis untuk mengambil informasi dari sumber digital, seperti halaman web, menggunakan program. Pada notebook ini, data artikel berita <a class="reference external" href="http://Detik.com">Detik.com</a> dikumpulkan untuk dua kategori, yaitu <strong>sport</strong> dan <strong>finance</strong>, kemudian disiapkan untuk analisis teks dan klasifikasi.</p>
 <p>Scraping data adalah teknik otomatisasi menggunakan bot atau skrip komputer untuk mengekstrak dan mengambil data spesifik dari berbagai sumber seperti halaman website, basis data, atau aplikasi lalu menyimpannya ke dalam format terstruktur seperti spreadsheet atau CSV.</p>
 <p>Cara Kerja Scraping DataProses pengambilan data ini umumnya melalui tiga tahapan utama:</p>
 <ul class="simple">
@@ -445,7 +449,7 @@
 </ul>
 <section id="persiapan-library">
 <h2><strong>Persiapan Library</strong><a class="headerlink" href="#persiapan-library" title="Link to this heading">#</a></h2>
-<p>Memasang pustaka yang diperlukan (trafilatura untuk ekstraksi konten teks bersih, beautifulsoup4 untuk mengambil daftar tautan URL).</p>
+<p>Beberapa pustaka digunakan untuk mendukung proses pengumpulan dan pengolahan data. <code class="docutils literal notranslate"><span class="pre">requests</span></code> mengambil halaman web, <code class="docutils literal notranslate"><span class="pre">BeautifulSoup</span></code> membaca struktur HTML, <code class="docutils literal notranslate"><span class="pre">trafilatura</span></code> mengekstrak isi artikel, <code class="docutils literal notranslate"><span class="pre">pandas</span></code> mengelola data dalam bentuk DataFrame, dan <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> melakukan representasi fitur serta reduksi dimensi.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>scikit-learn
@@ -503,7 +507,7 @@ Requirement already satisfied: six&gt;=1.5 in D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\P
 </section>
 <section id="langkah-1-mengumpulkan-200-url-artikel-detik-com">
 <h2><strong>Langkah 1: Mengumpulkan 200 URL Artikel <a class="reference external" href="http://Detik.com">Detik.com</a></strong><a class="headerlink" href="#langkah-1-mengumpulkan-200-url-artikel-detik-com" title="Link to this heading">#</a></h2>
-<p>Karena Trafilatura fokus mengekstrak isi halaman, kita perlu mengambil daftar URL terlebih dahulu dari halaman indeks berita Detik (misalnya kanal news). Kode ini akan melakukan paging otomatis hingga terkumpul minimal 100 URL unik</p>
+<p>Tahap pertama adalah mengumpulkan alamat artikel dari halaman indeks <a class="reference external" href="http://Detik.com">Detik.com</a>. Fungsi yang digunakan mengambil URL secara bertahap berdasarkan halaman indeks hingga memperoleh 100 artikel kategori <code class="docutils literal notranslate"><span class="pre">sport</span></code> dan 100 artikel kategori <code class="docutils literal notranslate"><span class="pre">finance</span></code>. Setiap URL disimpan bersama kategorinya sebagai label awal.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
@@ -597,148 +601,27 @@ Requirement already satisfied: six&gt;=1.5 in D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\P
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Kategori finance - Halaman 3: Terkumpul 60 URL
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Kategori finance - Halaman 4: Terkumpul 80 URL
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Kategori finance - Halaman 5: Terkumpul 100 URL
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total keseluruhan URL terkumpul: 200 URL (100 Sport, 100 Finance).
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="langkah-2-proses-scrapping-menggunakan-trafilatura">
-<h2><strong>Langkah 2: Proses Scrapping Menggunakan Trafilatura</strong><a class="headerlink" href="#langkah-2-proses-scrapping-menggunakan-trafilatura" title="Link to this heading">#</a></h2>
-<p>Setelah daftar URL terkumpul, iterasi setiap URL untuk mengekstrak judul, tanggal, penulis, dan teks isi berita secara bersih menggunakan fungsi trafilatura.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">trafilatura</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">bs4</span><span class="w"> </span><span class="kn">import</span> <span class="n">BeautifulSoup</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
-
-<span class="n">data_hasil</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">total_data</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_target_urls</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Memulai scraping </span><span class="si">{</span><span class="n">total_data</span><span class="si">}</span><span class="s2"> data (Sport &amp; Finance)..."</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_target_urls</span><span class="p">):</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">'url'</span><span class="p">]</span>
-    <span class="n">category</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">'category'</span><span class="p">]</span>
-    
-    <span class="k">try</span><span class="p">:</span>
-        <span class="c1"># 1. Ambil HTML mentah menggunakan requests untuk parsing judul &amp; tanggal</span>
-        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"User-Agent"</span><span class="p">:</span> <span class="s2">"Mozilla/5.0 (Windows NT 10.0; Win64; x64)"</span><span class="p">}</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
-        
-        <span class="n">title</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">date</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
-            <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
-            <span class="c1"># Ambil judul dari tag &lt;h1&gt; atau &lt;title&gt;</span>
-            <span class="n">title_tag</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'h1'</span><span class="p">)</span> <span class="ow">or</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'title'</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">title_tag</span><span class="p">:</span>
-                <span class="n">title</span> <span class="o">=</span> <span class="n">title_tag</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                
-            <span class="c1"># Ambil tanggal dari tag div class detail__date</span>
-            <span class="n">date_tag</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'div'</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">'detail__date'</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">date_tag</span><span class="p">:</span>
-                <span class="n">date</span> <span class="o">=</span> <span class="n">date_tag</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-
-        <span class="c1"># 2. Ambil teks bersih menggunakan Trafilatura</span>
-        <span class="n">downloaded</span> <span class="o">=</span> <span class="n">trafilatura</span><span class="o">.</span><span class="n">fetch_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="s2">""</span>
-        <span class="k">if</span> <span class="n">downloaded</span><span class="p">:</span>
-            <span class="n">extracted</span> <span class="o">=</span> <span class="n">trafilatura</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">downloaded</span><span class="p">,</span> <span class="n">include_comments</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_tables</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">extracted</span><span class="p">:</span>
-                <span class="n">text</span> <span class="o">=</span> <span class="n">extracted</span>
-                
-        <span class="c1"># Simpan ke list of dictionary</span>
-        <span class="n">data_hasil</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-            <span class="s1">'url'</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
-            <span class="s1">'category'</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span> <span class="c1"># Menyimpan label sport atau finance</span>
-            <span class="s1">'title'</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
-            <span class="s1">'date'</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span>
-            <span class="s1">'text'</span><span class="p">:</span> <span class="n">text</span>
-        <span class="p">})</span>
-        
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Berhasil scrape [</span><span class="si">{</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">total_data</span><span class="si">}</span><span class="s2">] - </span><span class="si">{</span><span class="n">category</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Gagal pada URL </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        
-    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
-
-<span class="c1"># 3. Buat DataFrame</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_hasil</span><span class="p">)</span>
-
-<span class="c1"># 4. Tambahkan kolom panjang karakter dengan perlindungan fillna('') agar terhindar dari TypeError</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'title_length'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'title'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">len</span><span class="p">)</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'text_length'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'text'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">len</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Memulai scraping 200 data (Sport &amp; Finance)...
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [1/200] - SPORT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [2/200] - SPORT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [3/200] - SPORT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [4/200] - SPORT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [5/200] - SPORT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [6/200] - SPORT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [7/200] - SPORT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [8/200] - SPORT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [9/200] - SPORT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [10/200] - SPORT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [11/200] - SPORT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [12/200] - SPORT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [13/200] - SPORT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [14/200] - SPORT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Berhasil scrape [15/200] - SPORT
-</pre></div>
-</div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">line</span> <span class="mi">52</span>
-<span class="g g-Whitespace">     </span><span class="mi">48</span>             <span class="s1">'text'</span><span class="p">:</span> <span class="n">text</span>
-<span class="g g-Whitespace">     </span><span class="mi">49</span>         <span class="p">})</span>
-<span class="g g-Whitespace">     </span><span class="mi">50</span> 
-<span class="g g-Whitespace">     </span><span class="mi">51</span>         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Berhasil scrape [</span><span class="si">{</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">total_data</span><span class="si">}</span><span class="s2">] - </span><span class="si">{</span><span class="n">category</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">52</span>     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">53</span>         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Gagal pada URL </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">54</span> 
-<span class="g g-Whitespace">     </span><span class="mi">55</span>     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">49</span>
+<span class="g g-Whitespace">     </span><span class="mi">45</span>     <span class="n">category_name</span><span class="o">=</span><span class="s2">"sport"</span>
+<span class="g g-Whitespace">     </span><span class="mi">46</span> <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">47</span> 
+<span class="g g-Whitespace">     </span><span class="mi">48</span> <span class="c1"># 2. Kumpulkan 100 URL Finance</span>
+<span class="ne">---&gt; </span><span class="mi">49</span> <span class="n">finance_urls</span> <span class="o">=</span> <span class="n">get_detik_urls_by_category</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">50</span>     <span class="n">base_url</span><span class="o">=</span><span class="s2">"https://finance.detik.com/indeks"</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">51</span>     <span class="n">target_count</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">52</span>     <span class="n">category_name</span><span class="o">=</span><span class="s2">"finance"</span>
+
+<span class="nn">Cell In[3], line 15,</span> in <span class="ni">get_detik_urls_by_category</span><span class="nt">(base_url, target_count, category_name)</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span>     <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">target_count</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span>         <span class="n">index_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">?page=</span><span class="si">{</span><span class="n">page</span><span class="si">}</span><span class="s2">"</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span>         <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"User-Agent"</span><span class="p">:</span> <span class="s2">"Mozilla/5.0 (Windows NT 10.0; Win64; x64)"</span><span class="p">}</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> 
+<span class="ne">---&gt; </span><span class="mi">15</span>         <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">index_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span>         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span>             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Gagal mengakses halaman </span><span class="si">{</span><span class="n">page</span><span class="si">}</span><span class="s2"> untuk </span><span class="si">{</span><span class="n">category_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span>             <span class="k">break</span>
 
 <span class="nn">File D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages\requests\api.py:87,</span> in <span class="ni">get</span><span class="nt">(url, params, **kwargs)</span>
 <span class="g g-Whitespace">     </span><span class="mi">74</span> <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span>
@@ -884,9 +767,286 @@ Requirement already satisfied: six&gt;=1.5 in D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\P
 </div>
 </div>
 </section>
+<section id="langkah-2-proses-scraping-menggunakan-trafilatura">
+<h2><strong>Langkah 2: Proses Scraping Menggunakan Trafilatura</strong><a class="headerlink" href="#langkah-2-proses-scraping-menggunakan-trafilatura" title="Link to this heading">#</a></h2>
+<p>Pada tahap ini, setiap URL diakses untuk mengambil metadata dan isi berita. <code class="docutils literal notranslate"><span class="pre">BeautifulSoup</span></code> digunakan untuk membaca judul serta tanggal artikel, sedangkan <code class="docutils literal notranslate"><span class="pre">trafilatura</span></code> digunakan untuk memperoleh teks berita yang lebih bersih dari elemen HTML yang tidak diperlukan. Hasil setiap artikel disimpan sebagai satu baris data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">trafilatura</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">bs4</span><span class="w"> </span><span class="kn">import</span> <span class="n">BeautifulSoup</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="n">data_hasil</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">total_data</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_target_urls</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Memulai scraping </span><span class="si">{</span><span class="n">total_data</span><span class="si">}</span><span class="s2"> data (Sport &amp; Finance)..."</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_target_urls</span><span class="p">):</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">'url'</span><span class="p">]</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">'category'</span><span class="p">]</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># 1. Ambil HTML mentah menggunakan requests untuk parsing judul &amp; tanggal</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"User-Agent"</span><span class="p">:</span> <span class="s2">"Mozilla/5.0 (Windows NT 10.0; Win64; x64)"</span><span class="p">}</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        
+        <span class="n">title</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span>
+            <span class="c1"># Ambil judul dari tag &lt;h1&gt; atau &lt;title&gt;</span>
+            <span class="n">title_tag</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'h1'</span><span class="p">)</span> <span class="ow">or</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'title'</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">title_tag</span><span class="p">:</span>
+                <span class="n">title</span> <span class="o">=</span> <span class="n">title_tag</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                
+            <span class="c1"># Ambil tanggal dari tag div class detail__date</span>
+            <span class="n">date_tag</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'div'</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">'detail__date'</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">date_tag</span><span class="p">:</span>
+                <span class="n">date</span> <span class="o">=</span> <span class="n">date_tag</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="c1"># 2. Ambil teks bersih menggunakan Trafilatura</span>
+        <span class="n">downloaded</span> <span class="o">=</span> <span class="n">trafilatura</span><span class="o">.</span><span class="n">fetch_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="k">if</span> <span class="n">downloaded</span><span class="p">:</span>
+            <span class="n">extracted</span> <span class="o">=</span> <span class="n">trafilatura</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">downloaded</span><span class="p">,</span> <span class="n">include_comments</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_tables</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">extracted</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="n">extracted</span>
+                
+        <span class="c1"># Simpan ke list of dictionary</span>
+        <span class="n">data_hasil</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s1">'url'</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+            <span class="s1">'category'</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span> <span class="c1"># Menyimpan label sport atau finance</span>
+            <span class="s1">'title'</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
+            <span class="s1">'date'</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span>
+            <span class="s1">'text'</span><span class="p">:</span> <span class="n">text</span>
+        <span class="p">})</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Berhasil scrape [</span><span class="si">{</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">total_data</span><span class="si">}</span><span class="s2">] - </span><span class="si">{</span><span class="n">category</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Gagal pada URL </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># 3. Buat DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_hasil</span><span class="p">)</span>
+
+<span class="c1"># 4. Tambahkan kolom panjang karakter dengan perlindungan fillna('') agar terhindar dari TypeError</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'title_length'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'title'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">len</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'text_length'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'text'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">len</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Memulai scraping 200 data (Sport &amp; Finance)...
+Berhasil scrape [1/200] - SPORT
+Berhasil scrape [2/200] - SPORT
+Berhasil scrape [3/200] - SPORT
+Berhasil scrape [4/200] - SPORT
+Berhasil scrape [5/200] - SPORT
+Berhasil scrape [6/200] - SPORT
+Berhasil scrape [7/200] - SPORT
+Berhasil scrape [8/200] - SPORT
+Berhasil scrape [9/200] - SPORT
+Berhasil scrape [10/200] - SPORT
+Berhasil scrape [11/200] - SPORT
+Berhasil scrape [12/200] - SPORT
+Berhasil scrape [13/200] - SPORT
+Berhasil scrape [14/200] - SPORT
+Berhasil scrape [15/200] - SPORT
+Berhasil scrape [16/200] - SPORT
+Berhasil scrape [17/200] - SPORT
+Berhasil scrape [18/200] - SPORT
+Berhasil scrape [19/200] - SPORT
+Berhasil scrape [20/200] - SPORT
+Berhasil scrape [21/200] - SPORT
+Berhasil scrape [22/200] - SPORT
+Berhasil scrape [23/200] - SPORT
+Berhasil scrape [24/200] - SPORT
+Berhasil scrape [25/200] - SPORT
+Berhasil scrape [26/200] - SPORT
+Berhasil scrape [27/200] - SPORT
+Berhasil scrape [28/200] - SPORT
+Berhasil scrape [29/200] - SPORT
+Berhasil scrape [30/200] - SPORT
+Berhasil scrape [31/200] - SPORT
+Berhasil scrape [32/200] - SPORT
+Berhasil scrape [33/200] - SPORT
+Berhasil scrape [34/200] - SPORT
+Berhasil scrape [35/200] - SPORT
+Berhasil scrape [36/200] - SPORT
+Berhasil scrape [37/200] - SPORT
+Berhasil scrape [38/200] - SPORT
+Berhasil scrape [39/200] - SPORT
+Berhasil scrape [40/200] - SPORT
+Berhasil scrape [41/200] - SPORT
+Berhasil scrape [42/200] - SPORT
+Berhasil scrape [43/200] - SPORT
+Berhasil scrape [44/200] - SPORT
+Berhasil scrape [45/200] - SPORT
+Berhasil scrape [46/200] - SPORT
+Berhasil scrape [47/200] - SPORT
+Berhasil scrape [48/200] - SPORT
+Berhasil scrape [49/200] - SPORT
+Berhasil scrape [50/200] - SPORT
+Berhasil scrape [51/200] - SPORT
+Berhasil scrape [52/200] - SPORT
+Berhasil scrape [53/200] - SPORT
+Berhasil scrape [54/200] - SPORT
+Berhasil scrape [55/200] - SPORT
+Berhasil scrape [56/200] - SPORT
+Berhasil scrape [57/200] - SPORT
+Berhasil scrape [58/200] - SPORT
+Berhasil scrape [59/200] - SPORT
+Berhasil scrape [60/200] - SPORT
+Berhasil scrape [61/200] - SPORT
+Berhasil scrape [62/200] - SPORT
+Berhasil scrape [63/200] - SPORT
+Berhasil scrape [64/200] - SPORT
+Berhasil scrape [65/200] - SPORT
+Berhasil scrape [66/200] - SPORT
+Berhasil scrape [67/200] - SPORT
+Berhasil scrape [68/200] - SPORT
+Berhasil scrape [69/200] - SPORT
+Berhasil scrape [70/200] - SPORT
+Berhasil scrape [71/200] - SPORT
+Berhasil scrape [72/200] - SPORT
+Berhasil scrape [73/200] - SPORT
+Berhasil scrape [74/200] - SPORT
+Berhasil scrape [75/200] - SPORT
+Berhasil scrape [76/200] - SPORT
+Berhasil scrape [77/200] - SPORT
+Berhasil scrape [78/200] - SPORT
+Berhasil scrape [79/200] - SPORT
+Berhasil scrape [80/200] - SPORT
+Berhasil scrape [81/200] - SPORT
+Berhasil scrape [82/200] - SPORT
+Berhasil scrape [83/200] - SPORT
+Berhasil scrape [84/200] - SPORT
+Berhasil scrape [85/200] - SPORT
+Berhasil scrape [86/200] - SPORT
+Berhasil scrape [87/200] - SPORT
+Berhasil scrape [88/200] - SPORT
+Berhasil scrape [89/200] - SPORT
+Berhasil scrape [90/200] - SPORT
+Berhasil scrape [91/200] - SPORT
+Berhasil scrape [92/200] - SPORT
+Berhasil scrape [93/200] - SPORT
+Berhasil scrape [94/200] - SPORT
+Berhasil scrape [95/200] - SPORT
+Berhasil scrape [96/200] - SPORT
+Berhasil scrape [97/200] - SPORT
+Berhasil scrape [98/200] - SPORT
+Berhasil scrape [99/200] - SPORT
+Berhasil scrape [100/200] - SPORT
+Berhasil scrape [101/200] - FINANCE
+Berhasil scrape [102/200] - FINANCE
+Berhasil scrape [103/200] - FINANCE
+Berhasil scrape [104/200] - FINANCE
+Berhasil scrape [105/200] - FINANCE
+Berhasil scrape [106/200] - FINANCE
+Berhasil scrape [107/200] - FINANCE
+Berhasil scrape [108/200] - FINANCE
+Berhasil scrape [109/200] - FINANCE
+Berhasil scrape [110/200] - FINANCE
+Berhasil scrape [111/200] - FINANCE
+Berhasil scrape [112/200] - FINANCE
+Berhasil scrape [113/200] - FINANCE
+Berhasil scrape [114/200] - FINANCE
+Berhasil scrape [115/200] - FINANCE
+Berhasil scrape [116/200] - FINANCE
+Berhasil scrape [117/200] - FINANCE
+Berhasil scrape [118/200] - FINANCE
+Berhasil scrape [119/200] - FINANCE
+Berhasil scrape [120/200] - FINANCE
+Berhasil scrape [121/200] - FINANCE
+Berhasil scrape [122/200] - FINANCE
+Berhasil scrape [123/200] - FINANCE
+Berhasil scrape [124/200] - FINANCE
+Berhasil scrape [125/200] - FINANCE
+Berhasil scrape [126/200] - FINANCE
+Berhasil scrape [127/200] - FINANCE
+Berhasil scrape [128/200] - FINANCE
+Berhasil scrape [129/200] - FINANCE
+Berhasil scrape [130/200] - FINANCE
+Berhasil scrape [131/200] - FINANCE
+Berhasil scrape [132/200] - FINANCE
+Berhasil scrape [133/200] - FINANCE
+Berhasil scrape [134/200] - FINANCE
+Berhasil scrape [135/200] - FINANCE
+Berhasil scrape [136/200] - FINANCE
+Berhasil scrape [137/200] - FINANCE
+Berhasil scrape [138/200] - FINANCE
+Berhasil scrape [139/200] - FINANCE
+Berhasil scrape [140/200] - FINANCE
+Berhasil scrape [141/200] - FINANCE
+Berhasil scrape [142/200] - FINANCE
+Berhasil scrape [143/200] - FINANCE
+Berhasil scrape [144/200] - FINANCE
+Berhasil scrape [145/200] - FINANCE
+Berhasil scrape [146/200] - FINANCE
+Berhasil scrape [147/200] - FINANCE
+Berhasil scrape [148/200] - FINANCE
+Berhasil scrape [149/200] - FINANCE
+Berhasil scrape [150/200] - FINANCE
+Berhasil scrape [151/200] - FINANCE
+Berhasil scrape [152/200] - FINANCE
+Berhasil scrape [153/200] - FINANCE
+Berhasil scrape [154/200] - FINANCE
+Berhasil scrape [155/200] - FINANCE
+Berhasil scrape [156/200] - FINANCE
+Berhasil scrape [157/200] - FINANCE
+Berhasil scrape [158/200] - FINANCE
+Berhasil scrape [159/200] - FINANCE
+Berhasil scrape [160/200] - FINANCE
+Berhasil scrape [161/200] - FINANCE
+Berhasil scrape [162/200] - FINANCE
+Berhasil scrape [163/200] - FINANCE
+Berhasil scrape [164/200] - FINANCE
+Berhasil scrape [165/200] - FINANCE
+Berhasil scrape [166/200] - FINANCE
+Berhasil scrape [167/200] - FINANCE
+Berhasil scrape [168/200] - FINANCE
+Berhasil scrape [169/200] - FINANCE
+Berhasil scrape [170/200] - FINANCE
+Berhasil scrape [171/200] - FINANCE
+Berhasil scrape [172/200] - FINANCE
+Berhasil scrape [173/200] - FINANCE
+Berhasil scrape [174/200] - FINANCE
+Berhasil scrape [175/200] - FINANCE
+Berhasil scrape [176/200] - FINANCE
+Berhasil scrape [177/200] - FINANCE
+Berhasil scrape [178/200] - FINANCE
+Berhasil scrape [179/200] - FINANCE
+Berhasil scrape [180/200] - FINANCE
+Berhasil scrape [181/200] - FINANCE
+Berhasil scrape [182/200] - FINANCE
+Berhasil scrape [183/200] - FINANCE
+Berhasil scrape [184/200] - FINANCE
+Berhasil scrape [185/200] - FINANCE
+Berhasil scrape [186/200] - FINANCE
+Berhasil scrape [187/200] - FINANCE
+Berhasil scrape [188/200] - FINANCE
+Berhasil scrape [189/200] - FINANCE
+Berhasil scrape [190/200] - FINANCE
+Berhasil scrape [191/200] - FINANCE
+Berhasil scrape [192/200] - FINANCE
+Berhasil scrape [193/200] - FINANCE
+Berhasil scrape [194/200] - FINANCE
+Berhasil scrape [195/200] - FINANCE
+Berhasil scrape [196/200] - FINANCE
+Berhasil scrape [197/200] - FINANCE
+Berhasil scrape [198/200] - FINANCE
+Berhasil scrape [199/200] - FINANCE
+Berhasil scrape [200/200] - FINANCE
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="langkah-3-menampilkan-hasil">
 <h2><strong>Langkah 3: Menampilkan Hasil</strong><a class="headerlink" href="#langkah-3-menampilkan-hasil" title="Link to this heading">#</a></h2>
-<p>Menampilkan beberapa sampel data teratas untuk memastikan hasil ekstraksi bersih.</p>
+<p>Hasil scraping ditampilkan dalam bentuk sampel agar struktur data dapat diperiksa. Pemeriksaan ini membantu memastikan kolom URL, kategori, judul, tanggal, dan teks artikel telah terisi sebelum data dianalisis lebih lanjut.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tampilkan sampel data teratas (Sport) dan terbawah (Finance)</span>
@@ -1030,6 +1190,7 @@ Requirement already satisfied: six&gt;=1.5 in D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\P
 </section>
 <section id="data-understanding">
 <h2><strong>Data Understanding</strong><a class="headerlink" href="#data-understanding" title="Link to this heading">#</a></h2>
+<p>Data understanding dilakukan untuk mengenali isi dan kualitas dataset sebelum pemodelan. Tahap ini mencakup pemeriksaan contoh data, struktur kolom, tipe data, nilai yang hilang, distribusi kategori, statistik panjang teks, dan kemungkinan duplikasi.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -1422,6 +1583,7 @@ File berhasil digabung dan disimpan sebagai 'dataset/hasil_scrapping_detik_200.c
 </section>
 <section id="preprocessing">
 <h2><strong>Preprocessing</strong><a class="headerlink" href="#preprocessing" title="Link to this heading">#</a></h2>
+<p>Preprocessing adalah tahap menyiapkan teks mentah agar dapat diproses oleh algoritma pembelajaran mesin. Dataset yang telah disimpan dalam format CSV dimuat kembali, kemudian kolom teks dibersihkan dan diubah menjadi bentuk yang lebih terstruktur.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -1523,6 +1685,7 @@ File berhasil digabung dan disimpan sebagai 'dataset/hasil_scrapping_detik_200.c
 </div>
 <section id="cleaning-data">
 <h3><strong>Cleaning Data</strong><a class="headerlink" href="#cleaning-data" title="Link to this heading">#</a></h3>
+<p>Pembersihan data teks dilakukan untuk mengurangi noise yang dapat mengganggu analisis. Prosesnya meliputi pengubahan huruf menjadi huruf kecil (<em>case folding</em>), penghapusan URL, angka, tanda baca, stopword Bahasa Indonesia, serta kata yang terlalu pendek. Hasil pembersihan disimpan pada kolom <code class="docutils literal notranslate"><span class="pre">clean_text</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">CountVectorizer</span>
@@ -1617,7 +1780,8 @@ File berhasil digabung dan disimpan sebagai 'dataset/hasil_scrapping_detik_200.c
 </div>
 </section>
 <section id="ekstrak-kata-unik">
-<h3><strong>Ekstrak kata unik</strong><a class="headerlink" href="#ekstrak-kata-unik" title="Link to this heading">#</a></h3>
+<h3><strong>Ekstrak Kata Unik</strong><a class="headerlink" href="#ekstrak-kata-unik" title="Link to this heading">#</a></h3>
+<p>Teks yang telah dibersihkan perlu diubah menjadi fitur numerik agar dapat digunakan dalam analisis. Pada tahap ini, <code class="docutils literal notranslate"><span class="pre">CountVectorizer</span></code> menghitung kemunculan setiap kata pada seluruh dokumen. Parameter <code class="docutils literal notranslate"><span class="pre">min_df=2</span></code> digunakan agar kata yang hanya muncul satu kali tidak dimasukkan sebagai fitur. Hasilnya adalah matriks Bag-of-Words dengan dokumen sebagai baris dan kata sebagai kolom.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">CountVectorizer</span>
@@ -1756,6 +1920,18 @@ Jumlah kata unik setelah difilter: 3565 kata unik
 </section>
 <section id="penerapan-tf-idf">
 <h3><strong>Penerapan TF-IDF</strong><a class="headerlink" href="#penerapan-tf-idf" title="Link to this heading">#</a></h3>
+<p>TF-IDF (<em>Term Frequency-Inverse Document Frequency</em>) digunakan untuk mengubah teks menjadi nilai numerik berdasarkan tingkat kepentingan setiap kata dalam suatu dokumen. Metode ini memberikan bobot tinggi pada kata yang sering muncul dalam satu dokumen, tetapi jarang ditemukan pada dokumen lain.</p>
+<p>Nilai TF-IDF terdiri dari dua bagian utama:</p>
+<ul class="simple">
+<li><p><strong>Term Frequency (TF)</strong> mengukur seberapa sering sebuah kata muncul dalam satu dokumen.</p></li>
+<li><p><strong>Inverse Document Frequency (IDF)</strong> mengurangi bobot kata yang muncul pada banyak dokumen karena kata tersebut kurang mampu membedakan isi antar dokumen.</p></li>
+</ul>
+<p>Secara umum, nilai TF-IDF dirumuskan sebagai:</p>
+<div class="math notranslate nohighlight">
+\[
+TFIDF(t,d) = TF(t,d) \times IDF(t)
+\]</div>
+<p>Pada proses ini, <code class="docutils literal notranslate"><span class="pre">TfidfVectorizer(min_df=2)</span></code> digunakan untuk membentuk matriks TF-IDF dari kolom <code class="docutils literal notranslate"><span class="pre">clean_text</span></code>. Parameter <code class="docutils literal notranslate"><span class="pre">min_df=2</span></code> berarti kata harus muncul minimal pada dua dokumen agar digunakan sebagai fitur. Hasil akhirnya berupa matriks numerik dengan baris sebagai dokumen dan kolom sebagai kata. Kolom <code class="docutils literal notranslate"><span class="pre">label</span></code> ditambahkan untuk merepresentasikan kategori berita, yaitu <code class="docutils literal notranslate"><span class="pre">sport</span></code> dengan label 1 dan <code class="docutils literal notranslate"><span class="pre">finance</span></code> dengan label 2.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">TfidfVectorizer</span>
@@ -1975,6 +2151,219 @@ Ukuran Dataset TF-IDF: 200 baris dokumen dan 3565 kolom kata unik (+ 1 kolom lab
 </div></div></div>
 </div>
 </section>
+<section id="penerapan-pca">
+<h3><strong>Penerapan PCA</strong><a class="headerlink" href="#penerapan-pca" title="Link to this heading">#</a></h3>
+<p>PCA (<em>Principal Component Analysis</em>) merupakan metode reduksi dimensi yang digunakan untuk menyederhanakan fitur tanpa menghilangkan sebagian besar informasi penting. Setelah teks diubah menjadi fitur TF-IDF, jumlah kolom kata dapat menjadi sangat banyak sehingga PCA membantu membuat data lebih ringkas dan lebih mudah dianalisis.</p>
+<p>PCA (<em>Principal Component Analysis</em>) adalah metode reduksi dimensi yang digunakan untuk mengurangi jumlah fitur tanpa menghilangkan sebagian besar informasi penting dari data. Pada hasil TF-IDF, jumlah kolom kata dapat sangat banyak sehingga analisis dan pemodelan menjadi lebih berat.</p>
+<p>PCA mengubah fitur-fitur awal menjadi beberapa <strong>komponen utama</strong> yang saling tidak berkorelasi. Komponen pertama (<code class="docutils literal notranslate"><span class="pre">PC1</span></code>) menyimpan variasi terbesar dalam data, komponen kedua (<code class="docutils literal notranslate"><span class="pre">PC2</span></code>) menyimpan variasi terbesar berikutnya, dan begitu seterusnya. Jumlah informasi yang dipertahankan dapat dilihat melalui <code class="docutils literal notranslate"><span class="pre">explained_variance_ratio_</span></code>.</p>
+<p>Pada notebook ini, <code class="docutils literal notranslate"><span class="pre">PCA(n_components=100)</span></code> digunakan untuk mereduksi fitur TF-IDF menjadi maksimal 100 komponen utama. Data hasil reduksi disimpan dalam <code class="docutils literal notranslate"><span class="pre">df_pca</span></code>, sedangkan kolom <code class="docutils literal notranslate"><span class="pre">label</span></code> tetap ditambahkan untuk mempertahankan kategori asli berita. Nilai total <em>explained variance</em> menunjukkan persentase informasi dari data TF-IDF yang masih dipertahankan setelah reduksi dimensi.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># 1. Pisahkan antara Fitur (X) dan Label (y)</span>
+<span class="c1"># X adalah matriks TF-IDF (semua kolom kecuali 'label')</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df_tfidf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'label'</span><span class="p">])</span>
+<span class="c1"># y adalah kolom label</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df_tfidf</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span>
+
+<span class="c1"># 2. Tentukan jumlah komponen PCA yang diinginkan</span>
+<span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># 3. Lakukan fitting dan transform pada data TF-IDF</span>
+<span class="n">X_pca</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># 4. Buat DataFrame baru hasil reduksi PCA</span>
+<span class="c1"># Membuat nama kolom secara otomatis: PC1, PC2, dst.</span>
+<span class="n">pca_columns</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">'PC</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">'</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X_pca</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+<span class="n">df_pca</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X_pca</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">pca_columns</span><span class="p">)</span>
+
+<span class="c1"># 5. Masukkan kembali kolom label di ujung DataFrame</span>
+<span class="n">df_pca</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">values</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Dimensi awal: </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> kolom fitur"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Dimensi setelah PCA: </span><span class="si">{</span><span class="n">df_pca</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2"> komponen utama (+ 1 kolom label)"</span><span class="p">)</span>
+
+<span class="c1"># Menampilkan informasi total varians yang berhasil dipertahankan oleh komponen</span>
+<span class="n">explained_variance_sum</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total informasi (varians) data asli yang dipertahankan: </span><span class="si">{</span><span class="n">explained_variance_sum</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+
+<span class="c1"># Tampilkan 5 baris pertama dari hasil PCA</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_pca</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">df_pca</span><span class="p">[</span><span class="s1">'label'</span><span class="p">])</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_pca</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">df_pca</span><span class="p">[</span><span class="s1">'label'</span><span class="p">])</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dimensi awal: 3565 kolom fitur
+Dimensi setelah PCA: 100 komponen utama (+ 1 kolom label)
+Total informasi (varians) data asli yang dipertahankan: 75.58%
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PC1</th>
+      <th>PC2</th>
+      <th>PC3</th>
+      <th>PC4</th>
+      <th>PC5</th>
+      <th>PC6</th>
+      <th>label</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-0.314009</td>
+      <td>0.020562</td>
+      <td>0.478003</td>
+      <td>0.083174</td>
+      <td>0.023920</td>
+      <td>-0.224144</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-0.042754</td>
+      <td>0.177207</td>
+      <td>-0.067693</td>
+      <td>0.024422</td>
+      <td>0.133004</td>
+      <td>-0.033239</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.003863</td>
+      <td>0.184687</td>
+      <td>-0.071509</td>
+      <td>0.005573</td>
+      <td>0.108430</td>
+      <td>0.021587</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-0.153841</td>
+      <td>-0.023519</td>
+      <td>-0.104853</td>
+      <td>0.031583</td>
+      <td>0.066528</td>
+      <td>-0.035138</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.025346</td>
+      <td>0.407933</td>
+      <td>-0.138318</td>
+      <td>0.156156</td>
+      <td>0.008797</td>
+      <td>0.023229</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PC1</th>
+      <th>PC2</th>
+      <th>PC3</th>
+      <th>PC4</th>
+      <th>PC5</th>
+      <th>PC6</th>
+      <th>label</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>195</th>
+      <td>0.070476</td>
+      <td>-0.019585</td>
+      <td>-0.007163</td>
+      <td>-0.179981</td>
+      <td>0.067465</td>
+      <td>-0.067998</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>196</th>
+      <td>0.070810</td>
+      <td>-0.046960</td>
+      <td>-0.007819</td>
+      <td>-0.154787</td>
+      <td>-0.050215</td>
+      <td>0.010325</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>197</th>
+      <td>0.057358</td>
+      <td>-0.019151</td>
+      <td>-0.007666</td>
+      <td>-0.115850</td>
+      <td>-0.041331</td>
+      <td>-0.005519</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>198</th>
+      <td>0.080157</td>
+      <td>-0.027690</td>
+      <td>-0.001613</td>
+      <td>-0.099849</td>
+      <td>0.012659</td>
+      <td>-0.008469</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>199</th>
+      <td>0.205205</td>
+      <td>-0.115816</td>
+      <td>0.010610</td>
+      <td>0.007913</td>
+      <td>-0.286026</td>
+      <td>-0.236744</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
 </section>
 </section>
 
@@ -2037,13 +2426,14 @@ Ukuran Dataset TF-IDF: 200 baris dokumen dan 3565 kolom kata unik (+ 1 kolom lab
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#persiapan-library"><strong>Persiapan Library</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-1-mengumpulkan-200-url-artikel-detik-com"><strong>Langkah 1: Mengumpulkan 200 URL Artikel Detik.com</strong></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-2-proses-scrapping-menggunakan-trafilatura"><strong>Langkah 2: Proses Scrapping Menggunakan Trafilatura</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-2-proses-scraping-menggunakan-trafilatura"><strong>Langkah 2: Proses Scraping Menggunakan Trafilatura</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-3-menampilkan-hasil"><strong>Langkah 3: Menampilkan Hasil</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-understanding"><strong>Data Understanding</strong></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocessing"><strong>Preprocessing</strong></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cleaning-data"><strong>Cleaning Data</strong></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstrak-kata-unik"><strong>Ekstrak kata unik</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstrak-kata-unik"><strong>Ekstrak Kata Unik</strong></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penerapan-tf-idf"><strong>Penerapan TF-IDF</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penerapan-pca"><strong>Penerapan PCA</strong></a></li>
 </ul>
 </li>
 </ul>
