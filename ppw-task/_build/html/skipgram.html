@@ -428,6 +428,7 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-grafik-akurasi-eksperimen"><strong>2. Visualisasi Grafik Akurasi Eksperimen</strong></a></li>
 </ul>
 </li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menghasilkan-tabel-bobot-terbaik"><strong>3. Menghasilkan tabel bobot terbaik</strong></a></li>
 </ul>
 </li>
 </ul>
@@ -988,7 +989,7 @@ max      1037.000000
 Name: word_count, dtype: float64
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\ADVAN\AppData\Local\Temp\ipykernel_8272\3046655590.py:17: FutureWarning: 
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\ADVAN\AppData\Local\Temp\ipykernel_11400\3046655590.py:17: FutureWarning: 
 
 Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
 
@@ -1041,7 +1042,7 @@ Passing `palette` without assigning `hue` is deprecated and will be removed in v
 [nltk_data]   Package stopwords is already up-to-date!
 </pre></div>
 </div>
-<img alt="_images/14ad9d14e2fd725fc00ccc5f34b71ed6789e8ae8c0f13aa8e819a991a0671997.png" src="_images/14ad9d14e2fd725fc00ccc5f34b71ed6789e8ae8c0f13aa8e819a991a0671997.png" />
+<img alt="_images/23efa14da01c2eac2ddae43dca35f264d5dfbb3481e228a3d75cfd6e727cc902.png" src="_images/23efa14da01c2eac2ddae43dca35f264d5dfbb3481e228a3d75cfd6e727cc902.png" />
 </div>
 </div>
 </section>
@@ -1243,22 +1244,22 @@ Contoh tokens v4: ['dua', 'petenis', 'indonesia,', 'muhammad', 'rifqi', 'fitriad
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== HASIL EVALUASI LENGKAP (DENGAN SKENARIO KEEP SEMUA) ===
           Preprocessing  Vector_Size  Window  Accuracy
-V1_CleanPunct_CleanStop           50       5     0.925
-V1_CleanPunct_CleanStop          100       5     0.925
+V1_CleanPunct_CleanStop           50       5     0.950
+V1_CleanPunct_CleanStop          100       5     0.900
  V3_CleanPunct_KeepStop           50       5     0.875
  V2_KeepPunct_CleanStop           50       5     0.850
- V3_CleanPunct_KeepStop          100       5     0.800
+ V3_CleanPunct_KeepStop          100       5     0.825
+V1_CleanPunct_CleanStop           50       2     0.775
  V2_KeepPunct_CleanStop          100       5     0.775
 V1_CleanPunct_CleanStop          100       2     0.750
-V1_CleanPunct_CleanStop           50       2     0.750
  V2_KeepPunct_CleanStop           50       2     0.750
- V2_KeepPunct_CleanStop          100       2     0.725
- V3_CleanPunct_KeepStop           50       2     0.700
-V4_KeepAll_PunctAndStop           50       5     0.700
+ V3_CleanPunct_KeepStop           50       2     0.725
+ V2_KeepPunct_CleanStop          100       2     0.700
 V4_KeepAll_PunctAndStop          100       5     0.700
- V3_CleanPunct_KeepStop          100       2     0.600
-V4_KeepAll_PunctAndStop          100       2     0.600
+V4_KeepAll_PunctAndStop           50       5     0.650
+ V3_CleanPunct_KeepStop          100       2     0.625
 V4_KeepAll_PunctAndStop           50       2     0.575
+V4_KeepAll_PunctAndStop          100       2     0.550
 </pre></div>
 </div>
 </div>
@@ -1322,7 +1323,7 @@ V4_KeepAll_PunctAndStop           50       2     0.575
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\ADVAN\AppData\Local\Temp\ipykernel_8272\1777119967.py:17: FutureWarning: 
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\ADVAN\AppData\Local\Temp\ipykernel_11400\1777119967.py:17: FutureWarning: 
 
 Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
 
@@ -1330,10 +1331,203 @@ Passing `palette` without assigning `hue` is deprecated and will be removed in v
 findfont: Failed to find font weight semibold for Arial, now using 700.
 </pre></div>
 </div>
-<img alt="_images/fa87d1dd9c6e1b1a7aa0c488e608b10078f6709e80b337ca916b2788033b0c84.png" src="_images/fa87d1dd9c6e1b1a7aa0c488e608b10078f6709e80b337ca916b2788033b0c84.png" />
+<img alt="_images/8a9cc3c3a453870106e705a4939266fac5ab97a1393bd53b6acd4cbb43cbef3a.png" src="_images/8a9cc3c3a453870106e705a4939266fac5ab97a1393bd53b6acd4cbb43cbef3a.png" />
 </div>
 </div>
 </section>
+</section>
+<section id="menghasilkan-tabel-bobot-terbaik">
+<h3><strong>3. Menghasilkan tabel bobot terbaik</strong><a class="headerlink" href="#menghasilkan-tabel-bobot-terbaik" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gensim.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Word2Vec</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># 1. Mengambil corpus dari skenario terbaik (V1: Clean Punctuation &amp; Clean Stopword)</span>
+<span class="n">corpus_terbaik</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'tokens_v1'</span><span class="p">])</span>
+
+<span class="c1"># 2. Latih model Word2Vec Skip-gram dengan parameter terbaik</span>
+<span class="n">best_w2v_model</span> <span class="o">=</span> <span class="n">Word2Vec</span><span class="p">(</span>
+    <span class="n">sentences</span><span class="o">=</span><span class="n">corpus_terbaik</span><span class="p">,</span> 
+    <span class="n">vector_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>   <span class="c1"># Sesuai hasil terbaik</span>
+    <span class="n">window</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>         <span class="c1"># Sesuai hasil terbaik</span>
+    <span class="n">min_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+    <span class="n">sg</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>             <span class="c1"># 1 = Skip-gram</span>
+    <span class="n">seed</span><span class="o">=</span><span class="mi">42</span>
+<span class="p">)</span>
+
+<span class="c1"># 3. Ekstrak vektor bobot dari setiap kata unik (Vocabulary) ke dalam DataFrame</span>
+<span class="n">vocab_words</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">best_w2v_model</span><span class="o">.</span><span class="n">wv</span><span class="o">.</span><span class="n">index_to_key</span><span class="p">)</span>
+<span class="n">vector_data</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">vocab_words</span><span class="p">:</span>
+    <span class="n">vec</span> <span class="o">=</span> <span class="n">best_w2v_model</span><span class="o">.</span><span class="n">wv</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
+    <span class="n">vector_data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s1">'Kata'</span><span class="p">:</span> <span class="n">word</span><span class="p">,</span>
+        <span class="c1"># Menampilkan 5 dimensi pertama sebagai contoh kolom di tabel</span>
+        <span class="o">**</span><span class="p">{</span><span class="sa">f</span><span class="s1">'Dim_</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">'</span><span class="p">:</span> <span class="n">val</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vec</span><span class="p">[:</span><span class="mi">5</span><span class="p">])},</span>
+        <span class="s1">'Full_Vector'</span><span class="p">:</span> <span class="n">vec</span> <span class="c1"># Menyimpan seluruh array 50 dimensi</span>
+    <span class="p">})</span>
+
+<span class="n">df_best_embeddings</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">vector_data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"=== TABEL BOBOT / VECTOR PADAT TERBAIK ==="</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Skenario Preprocessing : V1_CleanPunct_CleanStop"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Parameter Terpilih     : Vector_Size=50, Window=5"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Kata Unik (Vocab): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">vocab_words</span><span class="p">)</span><span class="si">}</span><span class="s2"> kata"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Akurasi Model Terakhir : 95.0% (0.950)</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Menampilkan 10 baris pertama tabel dengan 5 dimensi pertama</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_best_embeddings</span><span class="p">[[</span><span class="s1">'Kata'</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="sa">f</span><span class="s1">'Dim_</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">'</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)]]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+
+<span class="c1"># Contoh mengambil vektor lengkap untuk kata tertentu (misal kata pertama di vocab)</span>
+<span class="n">contoh_kata</span> <span class="o">=</span> <span class="n">vocab_words</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Contoh Vektor Lengkap (50 Dimensi) untuk kata '</span><span class="si">{</span><span class="n">contoh_kata</span><span class="si">}</span><span class="s2">':"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">best_w2v_model</span><span class="o">.</span><span class="n">wv</span><span class="p">[</span><span class="n">contoh_kata</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== TABEL BOBOT / VECTOR PADAT TERBAIK ===
+Skenario Preprocessing : V1_CleanPunct_CleanStop
+Parameter Terpilih     : Vector_Size=50, Window=5
+Total Kata Unik (Vocab): 7537 kata
+Akurasi Model Terakhir : 95.0% (0.950)
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Kata</th>
+      <th>Dim_1</th>
+      <th>Dim_2</th>
+      <th>Dim_3</th>
+      <th>Dim_4</th>
+      <th>Dim_5</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>indonesia</td>
+      <td>-0.106351</td>
+      <td>-0.053468</td>
+      <td>-0.296186</td>
+      <td>0.179767</td>
+      <td>0.135320</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2026</td>
+      <td>0.218744</td>
+      <td>-0.015826</td>
+      <td>-0.330712</td>
+      <td>0.211658</td>
+      <td>0.271902</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>rp</td>
+      <td>0.279493</td>
+      <td>-0.758535</td>
+      <td>-0.053166</td>
+      <td>-0.444412</td>
+      <td>0.480027</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>pemerintah</td>
+      <td>-0.175730</td>
+      <td>-0.413126</td>
+      <td>-0.231935</td>
+      <td>0.092694</td>
+      <td>0.030830</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>olahraga</td>
+      <td>-0.161629</td>
+      <td>-0.083617</td>
+      <td>-0.216312</td>
+      <td>0.202535</td>
+      <td>0.110959</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>masyarakat</td>
+      <td>-0.277646</td>
+      <td>-0.329579</td>
+      <td>-0.280758</td>
+      <td>0.162751</td>
+      <td>0.046537</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>jakarta</td>
+      <td>-0.069492</td>
+      <td>-0.153268</td>
+      <td>-0.436779</td>
+      <td>0.170314</td>
+      <td>-0.206561</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>harga</td>
+      <td>0.116001</td>
+      <td>-0.627421</td>
+      <td>-0.083932</td>
+      <td>-0.353685</td>
+      <td>0.438465</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>games</td>
+      <td>0.558362</td>
+      <td>0.291925</td>
+      <td>-0.512267</td>
+      <td>0.359255</td>
+      <td>0.415022</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>asian</td>
+      <td>0.485338</td>
+      <td>0.331050</td>
+      <td>-0.406381</td>
+      <td>0.070585</td>
+      <td>0.399771</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Contoh Vektor Lengkap (50 Dimensi) untuk kata 'olahraga':
+[-0.16162859 -0.08361694 -0.21631162  0.20253544  0.11095928  0.12459873
+  0.01071627  0.23238805 -0.06229229 -0.1367861   0.01477524  0.08106625
+  0.2740943   0.22731219 -0.15133782  0.19530125  0.332399   -0.81598306
+ -0.30171955 -0.10063554 -0.0490022   0.02615601 -0.40748063  0.27598414
+  0.26977825 -0.04395876 -0.00515609 -0.0128052  -0.04094304 -0.1879519
+  0.25503784 -0.12057963 -0.13282372  0.00666591 -0.11892147  0.09166465
+  0.29297948 -0.64780486 -0.04225633  0.17623258 -0.441996    0.5224157
+  0.33734244 -0.21546559 -0.2210028  -0.14789967  0.18327951  0.49453995
+  0.38517487 -0.17668298]
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 </section>
@@ -1410,6 +1604,7 @@ findfont: Failed to find font weight semibold for Arial, now using 700.
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-grafik-akurasi-eksperimen"><strong>2. Visualisasi Grafik Akurasi Eksperimen</strong></a></li>
 </ul>
 </li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menghasilkan-tabel-bobot-terbaik"><strong>3. Menghasilkan tabel bobot terbaik</strong></a></li>
 </ul>
 </li>
 </ul>
