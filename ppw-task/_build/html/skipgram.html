@@ -431,6 +431,7 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menghasilkan-tabel-bobot-terbaik"><strong>3. Menghasilkan tabel bobot terbaik</strong></a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#menyimpan-model"><strong>Menyimpan model</strong></a></li>
 </ul>
             </nav>
         </div>
@@ -989,7 +990,7 @@ max      1037.000000
 Name: word_count, dtype: float64
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\ADVAN\AppData\Local\Temp\ipykernel_11400\3046655590.py:17: FutureWarning: 
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\ADVAN\AppData\Local\Temp\ipykernel_21428\3046655590.py:17: FutureWarning: 
 
 Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
 
@@ -1042,7 +1043,7 @@ Passing `palette` without assigning `hue` is deprecated and will be removed in v
 [nltk_data]   Package stopwords is already up-to-date!
 </pre></div>
 </div>
-<img alt="_images/23efa14da01c2eac2ddae43dca35f264d5dfbb3481e228a3d75cfd6e727cc902.png" src="_images/23efa14da01c2eac2ddae43dca35f264d5dfbb3481e228a3d75cfd6e727cc902.png" />
+<img alt="_images/185af917ad880443a0b871bcd91497a31d92c12bbfb02952ae1f00f84be6a5cc.png" src="_images/185af917ad880443a0b871bcd91497a31d92c12bbfb02952ae1f00f84be6a5cc.png" />
 </div>
 </div>
 </section>
@@ -1183,8 +1184,10 @@ Contoh tokens v4: ['dua', 'petenis', 'indonesia,', 'muhammad', 'rifqi', 'fitriad
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.naive_bayes</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaussianNB</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_score</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="c1"># Masukkan skenario v4 ke dalam daftar pengujian</span>
+<span class="c1"># Daftar skenario preprocessing yang akan diuji</span>
 <span class="n">preprocessing_scenarios</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">'V1_CleanPunct_CleanStop'</span><span class="p">:</span> <span class="s1">'tokens_v1'</span><span class="p">,</span>
     <span class="s1">'V2_KeepPunct_CleanStop'</span><span class="p">:</span> <span class="s1">'tokens_v2'</span><span class="p">,</span>
@@ -1192,18 +1195,26 @@ Contoh tokens v4: ['dua', 'petenis', 'indonesia,', 'muhammad', 'rifqi', 'fitriad
     <span class="s1">'V4_KeepAll_PunctAndStop'</span><span class="p">:</span> <span class="s1">'tokens_v4'</span>
 <span class="p">}</span>
 
-<span class="n">vector_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span>
-<span class="n">windows</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'category'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="c1"># Menentukan rentang otomatis (atau bisa menggunakan range(10, 101, 10) agar lebih cepat)</span>
+<span class="n">vector_sizes</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1"># Contoh: kelipatan 10 dari 10 sampai 100 agar efisien</span>
+<span class="n">windows</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>             <span class="c1"># Rentang window dari 1 sampai 5</span>
 
-<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'category'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">all_grid_results</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">total_iterasi</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">preprocessing_scenarios</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">vector_sizes</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">windows</span><span class="p">)</span>
+<span class="n">current_iter</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Memulai Grid Search otomatis untuk </span><span class="si">{</span><span class="n">total_iterasi</span><span class="si">}</span><span class="s2"> kombinasi parameter..."</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">scen_name</span><span class="p">,</span> <span class="n">col_token</span> <span class="ow">in</span> <span class="n">preprocessing_scenarios</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">corpus</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col_token</span><span class="p">])</span>
     
     <span class="k">for</span> <span class="n">v_size</span> <span class="ow">in</span> <span class="n">vector_sizes</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">win</span> <span class="ow">in</span> <span class="n">windows</span><span class="p">:</span>
-            <span class="c1"># 1. Latih Word2Vec Skip-gram</span>
+            <span class="n">current_iter</span> <span class="o">+=</span> <span class="mi">1</span>
+            
+            <span class="c1"># 1. Latih Word2Vec Skip-gram dengan parameter dinamis</span>
             <span class="n">w2v_model</span> <span class="o">=</span> <span class="n">Word2Vec</span><span class="p">(</span>
                 <span class="n">sentences</span><span class="o">=</span><span class="n">corpus</span><span class="p">,</span> 
                 <span class="n">vector_size</span><span class="o">=</span><span class="n">v_size</span><span class="p">,</span> 
@@ -1213,53 +1224,119 @@ Contoh tokens v4: ['dua', 'petenis', 'indonesia,', 'muhammad', 'rifqi', 'fitriad
                 <span class="n">seed</span><span class="o">=</span><span class="mi">42</span>
             <span class="p">)</span>
             
-            <span class="c1"># 2. Rata-rata vektor dokumen</span>
+            <span class="c1"># 2. Ubah dokumen ke rata-rata vektor</span>
             <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">get_document_vector</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">w2v_model</span><span class="p">,</span> <span class="n">v_size</span><span class="p">)</span> <span class="k">for</span> <span class="n">tokens</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">])</span>
             
-            <span class="c1"># 3. Split Data (80:20)</span>
+            <span class="c1"># 3. Split Data Train &amp; Test (80:20)</span>
             <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
             
             <span class="c1"># 4. Modeling Naive Bayes</span>
             <span class="n">nb_model</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
             <span class="n">nb_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
             
-            <span class="c1"># 5. Evaluasi</span>
+            <span class="c1"># 5. Evaluasi Akurasi</span>
             <span class="n">y_pred</span> <span class="o">=</span> <span class="n">nb_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
             <span class="n">acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
             
-            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="n">all_grid_results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
                 <span class="s1">'Preprocessing'</span><span class="p">:</span> <span class="n">scen_name</span><span class="p">,</span>
                 <span class="s1">'Vector_Size'</span><span class="p">:</span> <span class="n">v_size</span><span class="p">,</span>
                 <span class="s1">'Window'</span><span class="p">:</span> <span class="n">win</span><span class="p">,</span>
                 <span class="s1">'Accuracy'</span><span class="p">:</span> <span class="n">acc</span>
             <span class="p">})</span>
 
-<span class="c1"># Tampilkan hasil akhir diurutkan dari akurasi tertinggi</span>
-<span class="n">df_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"=== HASIL EVALUASI LENGKAP (DENGAN SKENARIO KEEP SEMUA) ==="</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">df_results</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'Accuracy'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+<span class="c1"># Konversi ke DataFrame</span>
+<span class="n">df_grid_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">all_grid_results</span><span class="p">)</span>
+
+<span class="c1"># Urutkan berdasarkan akurasi tertinggi</span>
+<span class="n">df_grid_sorted</span> <span class="o">=</span> <span class="n">df_grid_results</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'Accuracy'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Ambil konfigurasi terbaik teratas</span>
+<span class="n">best_row</span> <span class="o">=</span> <span class="n">df_grid_sorted</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"=== HASIL GRID SEARCH: KOMBINASI TERBAIK DITEMUKAN! ==="</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">" Skenario Preprocessing : </span><span class="si">{</span><span class="n">best_row</span><span class="p">[</span><span class="s1">'Preprocessing'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">" Vector Size Terbaik    : </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s1">'Vector_Size'</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">" Window Terbaik         : </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s1">'Window'</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">" Akurasi Tertinggi      : </span><span class="si">{</span><span class="n">best_row</span><span class="p">[</span><span class="s1">'Accuracy'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== TOP 5 KOMBINASI PARAMETER TERBAIK ==="</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_grid_sorted</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== HASIL EVALUASI LENGKAP (DENGAN SKENARIO KEEP SEMUA) ===
-          Preprocessing  Vector_Size  Window  Accuracy
-V1_CleanPunct_CleanStop           50       5     0.950
-V1_CleanPunct_CleanStop          100       5     0.900
- V3_CleanPunct_KeepStop           50       5     0.875
- V2_KeepPunct_CleanStop           50       5     0.850
- V3_CleanPunct_KeepStop          100       5     0.825
-V1_CleanPunct_CleanStop           50       2     0.775
- V2_KeepPunct_CleanStop          100       5     0.775
-V1_CleanPunct_CleanStop          100       2     0.750
- V2_KeepPunct_CleanStop           50       2     0.750
- V3_CleanPunct_KeepStop           50       2     0.725
- V2_KeepPunct_CleanStop          100       2     0.700
-V4_KeepAll_PunctAndStop          100       5     0.700
-V4_KeepAll_PunctAndStop           50       5     0.650
- V3_CleanPunct_KeepStop          100       2     0.625
-V4_KeepAll_PunctAndStop           50       2     0.575
-V4_KeepAll_PunctAndStop          100       2     0.550
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Memulai Grid Search otomatis untuk 200 kombinasi parameter...
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span> <span class="n">line</span> <span class="mi">36</span>
+<span class="g g-Whitespace">     </span><span class="mi">32</span>         <span class="k">for</span> <span class="n">win</span> <span class="ow">in</span> <span class="n">windows</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">33</span>             <span class="n">current_iter</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="g g-Whitespace">     </span><span class="mi">34</span> 
+<span class="g g-Whitespace">     </span><span class="mi">35</span>             <span class="c1"># 1. Latih Word2Vec Skip-gram dengan parameter dinamis</span>
+<span class="ne">---&gt; </span><span class="mi">36</span>             <span class="n">w2v_model</span> <span class="o">=</span> <span class="n">Word2Vec</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">37</span>                 <span class="n">sentences</span><span class="o">=</span><span class="n">corpus</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">38</span>                 <span class="n">vector_size</span><span class="o">=</span><span class="n">v_size</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">39</span>                 <span class="n">window</span><span class="o">=</span><span class="n">win</span><span class="p">,</span>
+
+<span class="nn">File D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages\gensim\models\word2vec.py:430,</span> in <span class="ni">Word2Vec.__init__</span><span class="nt">(self, sentences, corpus_file, vector_size, alpha, window, min_count, max_vocab_size, sample, seed, workers, min_alpha, sg, hs, negative, ns_exponent, cbow_mean, hashfxn, epochs, null_word, trim_rule, sorted_vocab, batch_words, compute_loss, callbacks, comment, max_final_vocab, shrink_windows)</span>
+<span class="g g-Whitespace">    </span><span class="mi">428</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_check_corpus_sanity</span><span class="p">(</span><span class="n">corpus_iterable</span><span class="o">=</span><span class="n">corpus_iterable</span><span class="p">,</span> <span class="n">corpus_file</span><span class="o">=</span><span class="n">corpus_file</span><span class="p">,</span> <span class="n">passes</span><span class="o">=</span><span class="p">(</span><span class="n">epochs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+<span class="g g-Whitespace">    </span><span class="mi">429</span>     <span class="bp">self</span><span class="o">.</span><span class="n">build_vocab</span><span class="p">(</span><span class="n">corpus_iterable</span><span class="o">=</span><span class="n">corpus_iterable</span><span class="p">,</span> <span class="n">corpus_file</span><span class="o">=</span><span class="n">corpus_file</span><span class="p">,</span> <span class="n">trim_rule</span><span class="o">=</span><span class="n">trim_rule</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">430</span>     <span class="bp">self</span><span class="o">.</span><span class="n">train</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">431</span>         <span class="n">corpus_iterable</span><span class="o">=</span><span class="n">corpus_iterable</span><span class="p">,</span> <span class="n">corpus_file</span><span class="o">=</span><span class="n">corpus_file</span><span class="p">,</span> <span class="n">total_examples</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus_count</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">432</span>         <span class="n">total_words</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus_total_words</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span> <span class="n">start_alpha</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">433</span>         <span class="n">end_alpha</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">min_alpha</span><span class="p">,</span> <span class="n">compute_loss</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">compute_loss</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="n">callbacks</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">434</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">435</span>     <span class="k">if</span> <span class="n">trim_rule</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+<span class="nn">File D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages\gensim\models\word2vec.py:1073,</span> in <span class="ni">Word2Vec.train</span><span class="nt">(self, corpus_iterable, corpus_file, total_examples, total_words, epochs, start_alpha, end_alpha, word_count, queue_factor, report_delay, compute_loss, callbacks, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1070</span>     <span class="n">callback</span><span class="o">.</span><span class="n">on_epoch_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1072</span> <span class="k">if</span> <span class="n">corpus_iterable</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1073</span>     <span class="n">trained_word_count_epoch</span><span class="p">,</span> <span class="n">raw_word_count_epoch</span><span class="p">,</span> <span class="n">job_tally_epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_train_epoch</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1074</span>         <span class="n">corpus_iterable</span><span class="p">,</span> <span class="n">cur_epoch</span><span class="o">=</span><span class="n">cur_epoch</span><span class="p">,</span> <span class="n">total_examples</span><span class="o">=</span><span class="n">total_examples</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1075</span>         <span class="n">total_words</span><span class="o">=</span><span class="n">total_words</span><span class="p">,</span> <span class="n">queue_factor</span><span class="o">=</span><span class="n">queue_factor</span><span class="p">,</span> <span class="n">report_delay</span><span class="o">=</span><span class="n">report_delay</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1076</span>         <span class="n">callbacks</span><span class="o">=</span><span class="n">callbacks</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1077</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1078</span>     <span class="n">trained_word_count_epoch</span><span class="p">,</span> <span class="n">raw_word_count_epoch</span><span class="p">,</span> <span class="n">job_tally_epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_train_epoch_corpusfile</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1079</span>         <span class="n">corpus_file</span><span class="p">,</span> <span class="n">cur_epoch</span><span class="o">=</span><span class="n">cur_epoch</span><span class="p">,</span> <span class="n">total_examples</span><span class="o">=</span><span class="n">total_examples</span><span class="p">,</span> <span class="n">total_words</span><span class="o">=</span><span class="n">total_words</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1080</span>         <span class="n">callbacks</span><span class="o">=</span><span class="n">callbacks</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages\gensim\models\word2vec.py:1434,</span> in <span class="ni">Word2Vec._train_epoch</span><span class="nt">(self, data_iterable, cur_epoch, total_examples, total_words, queue_factor, report_delay, callbacks)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1431</span>     <span class="n">thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># make interrupting the process with ctrl+c easier</span>
+<span class="g g-Whitespace">   </span><span class="mi">1432</span>     <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="ne">-&gt; </span><span class="mi">1434</span> <span class="n">trained_word_count</span><span class="p">,</span> <span class="n">raw_word_count</span><span class="p">,</span> <span class="n">job_tally</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log_epoch_progress</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1435</span>     <span class="n">progress_queue</span><span class="p">,</span> <span class="n">job_queue</span><span class="p">,</span> <span class="n">cur_epoch</span><span class="o">=</span><span class="n">cur_epoch</span><span class="p">,</span> <span class="n">total_examples</span><span class="o">=</span><span class="n">total_examples</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1436</span>     <span class="n">total_words</span><span class="o">=</span><span class="n">total_words</span><span class="p">,</span> <span class="n">report_delay</span><span class="o">=</span><span class="n">report_delay</span><span class="p">,</span> <span class="n">is_corpus_file_mode</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1437</span> <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1439</span> <span class="k">return</span> <span class="n">trained_word_count</span><span class="p">,</span> <span class="n">raw_word_count</span><span class="p">,</span> <span class="n">job_tally</span>
+
+<span class="nn">File D:\KULIAH\TUGAS-TUGAS\SEMESTER 7\PPW\PPW\ppw\Lib\site-packages\gensim\models\word2vec.py:1289,</span> in <span class="ni">Word2Vec._log_epoch_progress</span><span class="nt">(self, progress_queue, job_queue, cur_epoch, total_examples, total_words, report_delay, is_corpus_file_mode)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1286</span> <span class="n">unfinished_worker_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workers</span>
+<span class="g g-Whitespace">   </span><span class="mi">1288</span> <span class="k">while</span> <span class="n">unfinished_worker_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1289</span>     <span class="n">report</span> <span class="o">=</span> <span class="n">progress_queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>  <span class="c1"># blocks if workers too slow</span>
+<span class="g g-Whitespace">   </span><span class="mi">1290</span>     <span class="k">if</span> <span class="n">report</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># a thread reporting that it finished</span>
+<span class="g g-Whitespace">   </span><span class="mi">1291</span>         <span class="n">unfinished_worker_count</span> <span class="o">-=</span> <span class="mi">1</span>
+
+<span class="nn">File C:\Program Files\Python312\Lib\queue.py:171,</span> in <span class="ni">Queue.get</span><span class="nt">(self, block, timeout)</span>
+<span class="g g-Whitespace">    </span><span class="mi">169</span> <span class="k">elif</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">170</span>     <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qsize</span><span class="p">():</span>
+<span class="ne">--&gt; </span><span class="mi">171</span>         <span class="bp">self</span><span class="o">.</span><span class="n">not_empty</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">172</span> <span class="k">elif</span> <span class="n">timeout</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">173</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"'timeout' must be a non-negative number"</span><span class="p">)</span>
+
+<span class="nn">File C:\Program Files\Python312\Lib\threading.py:355,</span> in <span class="ni">Condition.wait</span><span class="nt">(self, timeout)</span>
+<span class="g g-Whitespace">    </span><span class="mi">353</span> <span class="k">try</span><span class="p">:</span>    <span class="c1"># restore state no matter what (e.g., KeyboardInterrupt)</span>
+<span class="g g-Whitespace">    </span><span class="mi">354</span>     <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">355</span>         <span class="n">waiter</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">356</span>         <span class="n">gotit</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="g g-Whitespace">    </span><span class="mi">357</span>     <span class="k">else</span><span class="p">:</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
 </div>
 </div>
@@ -1286,12 +1363,14 @@ V4_KeepAll_PunctAndStop          100       2     0.550
 <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">"whitegrid"</span><span class="p">)</span>
 
 <span class="c1"># Buat kolom gabungan label parameter agar mudah dibaca di sumbu X</span>
-<span class="n">df_results</span><span class="p">[</span><span class="s1">'Param_Config'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_results</span><span class="p">[</span><span class="s1">'Preprocessing'</span><span class="p">]</span> <span class="o">+</span> \
-                             <span class="s1">' | V_Size='</span> <span class="o">+</span> <span class="n">df_results</span><span class="p">[</span><span class="s1">'Vector_Size'</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> \
-                             <span class="s1">' | Win='</span> <span class="o">+</span> <span class="n">df_results</span><span class="p">[</span><span class="s1">'Window'</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<span class="n">df_grid_results</span><span class="p">[</span><span class="s1">'Param_Config'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_grid_results</span><span class="p">[</span><span class="s1">'Preprocessing'</span><span class="p">]</span> <span class="o">+</span> \
+                             <span class="s1">' | V_Size='</span> <span class="o">+</span> <span class="n">df_grid_results</span><span class="p">[</span><span class="s1">'Vector_Size'</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> \
+                             <span class="s1">' | Win='</span> <span class="o">+</span> <span class="n">df_grid_results</span><span class="p">[</span><span class="s1">'Window'</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
 
-<span class="c1"># Urutkan berdasarkan akurasi tertinggi</span>
-<span class="n">df_sorted</span> <span class="o">=</span> <span class="n">df_results</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'Accuracy'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># Urutkan berdasarkan akurasi tertinggi dan ambil 5 data teratas</span>
+<span class="c1"># agar visualisasi hanya menampilkan hasil terbaik</span>
+
+<span class="n">df_sorted</span> <span class="o">=</span> <span class="n">df_grid_results</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'Accuracy'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 
 <span class="c1"># Buat Barplot horizontal</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span>
@@ -1323,15 +1402,14 @@ V4_KeepAll_PunctAndStop          100       2     0.550
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\ADVAN\AppData\Local\Temp\ipykernel_11400\1777119967.py:17: FutureWarning: 
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\ADVAN\AppData\Local\Temp\ipykernel_18284\4127156901.py:19: FutureWarning: 
 
 Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `y` variable to `hue` and set `legend=False` for the same effect.
 
   ax = sns.barplot(
-findfont: Failed to find font weight semibold for Arial, now using 700.
 </pre></div>
 </div>
-<img alt="_images/8a9cc3c3a453870106e705a4939266fac5ab97a1393bd53b6acd4cbb43cbef3a.png" src="_images/8a9cc3c3a453870106e705a4939266fac5ab97a1393bd53b6acd4cbb43cbef3a.png" />
+<img alt="_images/253a44360363734e4b0dfb02fe5f6912b9a202a9965cc643fe658bd21a3f577e.png" src="_images/253a44360363734e4b0dfb02fe5f6912b9a202a9965cc643fe658bd21a3f577e.png" />
 </div>
 </div>
 </section>
@@ -1349,7 +1427,7 @@ findfont: Failed to find font weight semibold for Arial, now using 700.
 <span class="c1"># 2. Latih model Word2Vec Skip-gram dengan parameter terbaik</span>
 <span class="n">best_w2v_model</span> <span class="o">=</span> <span class="n">Word2Vec</span><span class="p">(</span>
     <span class="n">sentences</span><span class="o">=</span><span class="n">corpus_terbaik</span><span class="p">,</span> 
-    <span class="n">vector_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>   <span class="c1"># Sesuai hasil terbaik</span>
+    <span class="n">vector_size</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>   <span class="c1"># Sesuai hasil terbaik</span>
     <span class="n">window</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>         <span class="c1"># Sesuai hasil terbaik</span>
     <span class="n">min_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
     <span class="n">sg</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>             <span class="c1"># 1 = Skip-gram</span>
@@ -1366,23 +1444,23 @@ findfont: Failed to find font weight semibold for Arial, now using 700.
         <span class="s1">'Kata'</span><span class="p">:</span> <span class="n">word</span><span class="p">,</span>
         <span class="c1"># Menampilkan 5 dimensi pertama sebagai contoh kolom di tabel</span>
         <span class="o">**</span><span class="p">{</span><span class="sa">f</span><span class="s1">'Dim_</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">'</span><span class="p">:</span> <span class="n">val</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vec</span><span class="p">[:</span><span class="mi">5</span><span class="p">])},</span>
-        <span class="s1">'Full_Vector'</span><span class="p">:</span> <span class="n">vec</span> <span class="c1"># Menyimpan seluruh array 50 dimensi</span>
+        <span class="s1">'Full_Vector'</span><span class="p">:</span> <span class="n">vec</span> <span class="c1"># Menyimpan seluruh array 40 dimensi</span>
     <span class="p">})</span>
 
 <span class="n">df_best_embeddings</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">vector_data</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"=== TABEL BOBOT / VECTOR PADAT TERBAIK ==="</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Skenario Preprocessing : V1_CleanPunct_CleanStop"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Parameter Terpilih     : Vector_Size=50, Window=5"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Parameter Terpilih     : Vector_Size=80, Window=5"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Kata Unik (Vocab): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">vocab_words</span><span class="p">)</span><span class="si">}</span><span class="s2"> kata"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Akurasi Model Terakhir : 95.0% (0.950)</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Akurasi Model Terakhir : 95.00% (0.9500)</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="c1"># Menampilkan 10 baris pertama tabel dengan 5 dimensi pertama</span>
 <span class="n">display</span><span class="p">(</span><span class="n">df_best_embeddings</span><span class="p">[[</span><span class="s1">'Kata'</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="sa">f</span><span class="s1">'Dim_</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">'</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)]]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
 
 <span class="c1"># Contoh mengambil vektor lengkap untuk kata tertentu (misal kata pertama di vocab)</span>
 <span class="n">contoh_kata</span> <span class="o">=</span> <span class="n">vocab_words</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Contoh Vektor Lengkap (50 Dimensi) untuk kata '</span><span class="si">{</span><span class="n">contoh_kata</span><span class="si">}</span><span class="s2">':"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Contoh Vektor Lengkap (80 Dimensi) untuk kata '</span><span class="si">{</span><span class="n">contoh_kata</span><span class="si">}</span><span class="s2">':"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">best_w2v_model</span><span class="o">.</span><span class="n">wv</span><span class="p">[</span><span class="n">contoh_kata</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -1390,9 +1468,9 @@ findfont: Failed to find font weight semibold for Arial, now using 700.
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== TABEL BOBOT / VECTOR PADAT TERBAIK ===
 Skenario Preprocessing : V1_CleanPunct_CleanStop
-Parameter Terpilih     : Vector_Size=50, Window=5
+Parameter Terpilih     : Vector_Size=80, Window=5
 Total Kata Unik (Vocab): 7537 kata
-Akurasi Model Terakhir : 95.0% (0.950)
+Akurasi Model Terakhir : 95.00% (0.9500)
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1425,110 +1503,218 @@ Akurasi Model Terakhir : 95.0% (0.950)
     <tr>
       <th>0</th>
       <td>indonesia</td>
-      <td>-0.106351</td>
-      <td>-0.053468</td>
-      <td>-0.296186</td>
-      <td>0.179767</td>
-      <td>0.135320</td>
+      <td>-0.011352</td>
+      <td>0.012837</td>
+      <td>0.078327</td>
+      <td>0.025812</td>
+      <td>0.226236</td>
     </tr>
     <tr>
       <th>1</th>
       <td>2026</td>
-      <td>0.218744</td>
-      <td>-0.015826</td>
-      <td>-0.330712</td>
-      <td>0.211658</td>
-      <td>0.271902</td>
+      <td>0.025403</td>
+      <td>0.101880</td>
+      <td>0.236288</td>
+      <td>-0.101153</td>
+      <td>0.463654</td>
     </tr>
     <tr>
       <th>2</th>
       <td>rp</td>
-      <td>0.279493</td>
-      <td>-0.758535</td>
-      <td>-0.053166</td>
-      <td>-0.444412</td>
-      <td>0.480027</td>
+      <td>0.186094</td>
+      <td>-0.262671</td>
+      <td>-0.168516</td>
+      <td>-0.316063</td>
+      <td>0.015557</td>
     </tr>
     <tr>
       <th>3</th>
       <td>pemerintah</td>
-      <td>-0.175730</td>
-      <td>-0.413126</td>
-      <td>-0.231935</td>
-      <td>0.092694</td>
-      <td>0.030830</td>
+      <td>-0.019191</td>
+      <td>-0.136582</td>
+      <td>-0.132661</td>
+      <td>0.053844</td>
+      <td>0.079270</td>
     </tr>
     <tr>
       <th>4</th>
       <td>olahraga</td>
-      <td>-0.161629</td>
-      <td>-0.083617</td>
-      <td>-0.216312</td>
-      <td>0.202535</td>
-      <td>0.110959</td>
+      <td>-0.058949</td>
+      <td>-0.138128</td>
+      <td>-0.011592</td>
+      <td>0.086889</td>
+      <td>0.220686</td>
     </tr>
     <tr>
       <th>5</th>
       <td>masyarakat</td>
-      <td>-0.277646</td>
-      <td>-0.329579</td>
-      <td>-0.280758</td>
-      <td>0.162751</td>
-      <td>0.046537</td>
+      <td>0.004325</td>
+      <td>-0.130365</td>
+      <td>-0.102968</td>
+      <td>0.104440</td>
+      <td>0.097662</td>
     </tr>
     <tr>
       <th>6</th>
       <td>jakarta</td>
-      <td>-0.069492</td>
-      <td>-0.153268</td>
-      <td>-0.436779</td>
-      <td>0.170314</td>
-      <td>-0.206561</td>
+      <td>-0.212897</td>
+      <td>-0.028086</td>
+      <td>-0.139567</td>
+      <td>-0.017673</td>
+      <td>0.096074</td>
     </tr>
     <tr>
       <th>7</th>
       <td>harga</td>
-      <td>0.116001</td>
-      <td>-0.627421</td>
-      <td>-0.083932</td>
-      <td>-0.353685</td>
-      <td>0.438465</td>
+      <td>0.141271</td>
+      <td>-0.301898</td>
+      <td>-0.179099</td>
+      <td>-0.243867</td>
+      <td>0.045514</td>
     </tr>
     <tr>
       <th>8</th>
       <td>games</td>
-      <td>0.558362</td>
-      <td>0.291925</td>
-      <td>-0.512267</td>
-      <td>0.359255</td>
-      <td>0.415022</td>
+      <td>0.173711</td>
+      <td>0.281218</td>
+      <td>0.482796</td>
+      <td>-0.126899</td>
+      <td>0.604755</td>
     </tr>
     <tr>
       <th>9</th>
       <td>asian</td>
-      <td>0.485338</td>
-      <td>0.331050</td>
-      <td>-0.406381</td>
-      <td>0.070585</td>
-      <td>0.399771</td>
+      <td>0.019563</td>
+      <td>0.345464</td>
+      <td>0.494646</td>
+      <td>-0.218226</td>
+      <td>0.602448</td>
     </tr>
   </tbody>
 </table>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Contoh Vektor Lengkap (50 Dimensi) untuk kata 'olahraga':
-[-0.16162859 -0.08361694 -0.21631162  0.20253544  0.11095928  0.12459873
-  0.01071627  0.23238805 -0.06229229 -0.1367861   0.01477524  0.08106625
-  0.2740943   0.22731219 -0.15133782  0.19530125  0.332399   -0.81598306
- -0.30171955 -0.10063554 -0.0490022   0.02615601 -0.40748063  0.27598414
-  0.26977825 -0.04395876 -0.00515609 -0.0128052  -0.04094304 -0.1879519
-  0.25503784 -0.12057963 -0.13282372  0.00666591 -0.11892147  0.09166465
-  0.29297948 -0.64780486 -0.04225633  0.17623258 -0.441996    0.5224157
-  0.33734244 -0.21546559 -0.2210028  -0.14789967  0.18327951  0.49453995
-  0.38517487 -0.17668298]
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Contoh Vektor Lengkap (80 Dimensi) untuk kata 'olahraga':
+[-5.89488409e-02 -1.38127863e-01 -1.15920911e-02  8.68885070e-02
+  2.20685869e-01 -2.50083078e-02 -1.03274137e-01 -3.04283649e-01
+ -3.16463530e-01 -2.99361739e-02  8.02316740e-02 -8.41274858e-02
+  2.26255223e-01  2.71239728e-01 -1.70129240e-01 -5.94239719e-02
+  2.53985133e-02 -2.18649179e-01 -2.21584916e-01  2.50982583e-01
+ -1.12471178e-01  2.20621526e-01 -6.49114028e-02  9.77962613e-02
+  2.41200831e-02  3.41292322e-01 -5.73442094e-02  1.23797245e-01
+ -2.27270260e-01  1.40659977e-02 -1.55017018e-01 -2.58183688e-01
+ -3.98460954e-01  1.83013752e-01  2.19364032e-01 -3.01274881e-02
+  1.18756205e-01 -2.69427508e-01 -4.62260574e-01  8.58058408e-02
+  4.45586443e-02  2.17038378e-01  3.41479421e-01  4.00737196e-01
+ -2.11827591e-01  3.22162867e-01 -1.20199710e-01  2.02498779e-01
+ -6.56199679e-02 -4.58967388e-02  8.71272758e-02  4.09512997e-01
+ -2.86880612e-01  1.40444964e-01  3.57262552e-01 -1.92187890e-01
+  2.93863453e-02  2.51838509e-02 -2.79059708e-01 -1.92727312e-01
+  2.16986835e-01  1.94870070e-01 -1.01758782e-02 -6.63166046e-02
+ -1.04841515e-01 -4.03557792e-02  5.67106763e-05 -7.63912080e-03
+  1.62749037e-01 -2.46538863e-01 -2.96560347e-01 -3.00892800e-01
+  3.43125284e-01 -2.44751915e-01  5.79501688e-02  3.03515524e-01
+ -9.57535282e-02 -1.57292746e-02  1.82806477e-01  4.92104679e-01]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Dimensi Dataset Utama (DataFrame)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"=== DIMENSI DATASET UTAMA ==="</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah Baris (Dokumen Berita) : </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah Kolom                : </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Bentuk keseluruhan (Shape)  : </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># 2. Dimensi Vocabulary &amp; Vektor Word2Vec Terbaik</span>
+<span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">best_w2v_model</span><span class="o">.</span><span class="n">wv</span><span class="o">.</span><span class="n">index_to_key</span><span class="p">)</span>
+<span class="n">vector_size</span> <span class="o">=</span> <span class="n">best_w2v_model</span><span class="o">.</span><span class="n">vector_size</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== DIMENSI WORD2VEC SKIP-GRAM TERBAIK ==="</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah Kata Unik (Vocab Size) : </span><span class="si">{</span><span class="n">vocab_size</span><span class="si">}</span><span class="s2"> kata"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Ukuran Dimensi Vektor (Embedding): </span><span class="si">{</span><span class="n">vector_size</span><span class="si">}</span><span class="s2"> dimensi"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Bentuk Matriks Embedding      : (</span><span class="si">{</span><span class="n">vocab_size</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">vector_size</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+
+<span class="c1"># 3. Dimensi Matriks Fitur Dokumen (X) sebelum masuk Naive Bayes</span>
+<span class="c1"># (Jumlah dokumen x Vector Size)</span>
+<span class="n">corpus_terbaik</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'tokens_v1'</span><span class="p">])</span>
+<span class="n">X_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">get_document_vector</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">best_w2v_model</span><span class="p">,</span> <span class="n">vector_size</span><span class="p">)</span> <span class="k">for</span> <span class="n">tokens</span> <span class="ow">in</span> <span class="n">corpus_terbaik</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== DIMENSI MATRIKS FITUR DOKUMEN (X) ==="</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Bentuk Matriks X (Fitur Latihan) : </span><span class="si">{</span><span class="n">X_features</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== DIMENSI DATASET UTAMA ===
+Jumlah Baris (Dokumen Berita) : 200
+Jumlah Kolom                : 12
+Bentuk keseluruhan (Shape)  : (200, 12)
+
+=== DIMENSI WORD2VEC SKIP-GRAM TERBAIK ===
+Jumlah Kata Unik (Vocab Size) : 7537 kata
+Ukuran Dimensi Vektor (Embedding): 80 dimensi
+Bentuk Matriks Embedding      : (7537, 80)
+
+=== DIMENSI MATRIKS FITUR DOKUMEN (X) ===
+Bentuk Matriks X (Fitur Latihan) : (200, 80)
 </pre></div>
 </div>
 </div>
 </div>
 </section>
+</section>
+<section id="menyimpan-model">
+<h2><strong>Menyimpan model</strong><a class="headerlink" href="#menyimpan-model" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gensim.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Word2Vec</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># 1. Latih ulang model Word2Vec terbaik (V1: CleanPunct, CleanStop, Vector_Size=50, Window=5)</span>
+<span class="n">corpus_terbaik</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'tokens_v1'</span><span class="p">])</span>
+<span class="n">best_w2v_model</span> <span class="o">=</span> <span class="n">Word2Vec</span><span class="p">(</span>
+    <span class="n">sentences</span><span class="o">=</span><span class="n">corpus_terbaik</span><span class="p">,</span> 
+    <span class="n">vector_size</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> 
+    <span class="n">window</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> 
+    <span class="n">min_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+    <span class="n">sg</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+    <span class="n">seed</span><span class="o">=</span><span class="mi">42</span>
+<span class="p">)</span>
+
+<span class="c1"># 2. Latih ulang Naive Bayes model menggunakan seluruh data</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_document_vector</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">vector_size</span><span class="p">):</span>
+    <span class="n">vectors</span> <span class="o">=</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">wv</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">tokens</span> <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">wv</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">vector_size</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">get_document_vector</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">best_w2v_model</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span> <span class="k">for</span> <span class="n">tokens</span> <span class="ow">in</span> <span class="n">corpus_terbaik</span><span class="p">])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'category'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.naive_bayes</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaussianNB</span>
+<span class="n">best_nb_model</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
+<span class="n">best_nb_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># 3. Simpan (Save) Model Word2Vec, Naive Bayes, dan Fungsi Preprocessing ke dalam file .pkl</span>
+<span class="n">model_package</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'w2v_model'</span><span class="p">:</span> <span class="n">best_w2v_model</span><span class="p">,</span>
+    <span class="s1">'nb_model'</span><span class="p">:</span> <span class="n">best_nb_model</span><span class="p">,</span>
+    <span class="s1">'vector_size'</span><span class="p">:</span> <span class="mi">80</span>
+<span class="p">}</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'model_klasifikasi_detik.pkl'</span><span class="p">,</span> <span class="s1">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">model_package</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Model berhasil disimpan ke file 'model_klasifikasi_detik.pkl'!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model berhasil disimpan ke file 'model_klasifikasi_detik.pkl'!
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 
@@ -1607,6 +1793,7 @@ Akurasi Model Terakhir : 95.0% (0.950)
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menghasilkan-tabel-bobot-terbaik"><strong>3. Menghasilkan tabel bobot terbaik</strong></a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#menyimpan-model"><strong>Menyimpan model</strong></a></li>
 </ul>
   </nav></div>
 
